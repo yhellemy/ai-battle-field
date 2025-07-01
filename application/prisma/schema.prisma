@@ -1,0 +1,94 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Provider {
+  ollama
+}
+
+enum TipoMetrica {
+  CompreensaoTextual
+  ClarezaResposta
+}
+
+model BancoDeQuestoes {
+  id Int @id @default(autoincrement())
+
+  metrica   Metricas @relation(fields: [metricaId], references: [id], onDelete: Cascade)
+  metricaId Int
+
+  pergunta Json
+  gabarito Json
+
+  resultados Resultados[]
+
+  @@unique([id, metricaId])
+}
+
+model Metricas {
+  id       Int    @id @default(autoincrement())
+  metricas String
+  tipo     TipoMetrica
+  bancoDeQuestoes BancoDeQuestoes[]
+  indicadores     Indicadores[]
+}
+
+model Provedores {
+  id   Int    @id @default(autoincrement())
+  nome Provider @unique
+
+  modelos Modelos[]
+}
+
+model Modelos {
+  id   Int    @id @default(autoincrement())
+  nome String
+
+  provedor   Provedores @relation(fields: [provedorId], references: [id], onDelete: Cascade)
+  provedorId Int
+
+  resultados  Resultados[]
+  Indicadores Indicadores[]
+
+  @@unique([provedorId, nome])
+}
+
+model Resultados {
+  createdAt DateTime @default(now())
+  id        Int      @id @default(autoincrement())
+
+  tipoResultado TipoMetrica
+  jsonResultado Json?
+
+  erro Boolean @default(false)
+  jsonErro Json?
+
+  bancoDeQuestoes   BancoDeQuestoes @relation(fields: [bancoDeQuestoesId], references: [id])
+  bancoDeQuestoesId Int
+
+  modelo   Modelos @relation(fields: [modeloId], references: [id])
+  modeloId Int
+
+  @@unique([bancoDeQuestoesId, modeloId])
+}
+
+// Indicadores são os Resultados processados
+model Indicadores {
+  createdAt DateTime @default(now())
+  id        Int      @id @default(autoincrement())
+
+  indicador Int
+
+  modelo   Modelos @relation(fields: [modeloId], references: [id])
+  modeloId Int
+
+  metrica   Metricas @relation(fields: [metricaId], references: [id])
+  metricaId Int
+
+  @@unique([id, modeloId, metricaId])
+}
