@@ -57,7 +57,7 @@ await prisma.provedores.create({
         } satisfies ComprTextualQuestion,
         gabarito: { resposta: item.gabarito },
       }
-    }).filter((item, index) => 20 > index)
+    })//.filter((item, index) => 20 > index)
   })
   
 
