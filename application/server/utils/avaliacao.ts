@@ -3,7 +3,7 @@ export * from './avaliacao/index'
 
 export const avaliacao = {
   [TipoMetrica.CompreensaoTextual]: compreensaoTextual,
-  [TipoMetrica.ClarezaResposta]: (modelProvider: ModelProvider, ctx: any) => ({ value: null })
+  [TipoMetrica.ClarezaResposta]: clarezaResposta,
 } as const
 
 export async function processarAvaliacaoLlm(metrica: TipoMetrica, modelo: ModelProvider, ctx: any) {

@@ -1,6 +1,8 @@
 import { PrismaClient, TipoMetrica, Provider } from '@prisma/client'
-import testes from './testes.json'
-import { type ComprTextualQuestion } from '~~/shared/utils/types'
+import comprTextualJson from './compreensao-textual.json'
+import clarezaResJson from './clareza-resposta.json'
+
+import { type ClarezaRespostaQuestao, type ComprTextualQuestion } from '~~/shared/utils/types'
 
 const prisma = new PrismaClient()
 
@@ -30,6 +32,13 @@ await prisma.provedores.create({
     }
   })
 
+  const cr = await prisma.metricas.create({
+    data: {
+      metricas: 'Clareza da resposta',
+      tipo: TipoMetrica.ClarezaResposta,
+    }
+  })
+
   await prisma.bancoDeQuestoes.createMany({
     data: [
       {
@@ -46,7 +55,7 @@ await prisma.provedores.create({
   })
 
   await prisma.bancoDeQuestoes.createMany({
-    data: testes.map((item) => {
+    data: comprTextualJson.map((item) => {
       return {
         metricaId: tx.id,
         pergunta: {
@@ -55,6 +64,19 @@ await prisma.provedores.create({
           hipotese: item.hipotese,
           nivel: item.hipotese
         } satisfies ComprTextualQuestion,
+        gabarito: { resposta: item.gabarito },
+      }
+    })//.filter((item, index) => 20 > index)
+  })
+
+  await prisma.bancoDeQuestoes.createMany({
+    data: clarezaResJson.map((item) => {
+      return {
+        metricaId: cr.id,
+        pergunta: {
+          texto: item.texto,
+          gabarito: item.gabarito
+        } satisfies ClarezaRespostaQuestao,
         gabarito: { resposta: item.gabarito },
       }
     })//.filter((item, index) => 20 > index)

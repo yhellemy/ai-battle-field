@@ -4,7 +4,7 @@ export * from './motor-calculo/index'
 
 export const motor = {
   [TipoMetrica.CompreensaoTextual]: compreensaoTextualEngine,
-  [TipoMetrica.ClarezaResposta]: (output: ComprTextualOutput, gabarito: ComprTextualOutput) => 0
+  [TipoMetrica.ClarezaResposta]: clarezaRespostaEngine
 } as const
 
 export async function processarIndicador(metrica: TipoMetrica, output: any, gabarito: any) {

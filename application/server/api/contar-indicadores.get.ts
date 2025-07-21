@@ -1,3 +1,5 @@
+import { TipoMetrica } from "@prisma/client";
+
 export default defineEventHandler(async (event) => {
   const prisma = usePrisma();
 
@@ -6,6 +8,11 @@ export default defineEventHandler(async (event) => {
     _count: {
       _all: true,
     },
+    where: {
+      metrica: {
+        tipo: TipoMetrica.CompreensaoTextual
+      }
+    }
   });
 
   const agregadosPorModelo = await prisma.indicadores.groupBy({
@@ -16,11 +23,17 @@ export default defineEventHandler(async (event) => {
     _avg: {
       indicador: true,
     },
+    where: {
+      metrica: {
+        tipo: TipoMetrica.CompreensaoTextual
+      }
+    }
   });
 
   const modelos = await prisma.modelos.findMany({
     select: { id: true, nome: true },
   });
+  
   const mapaNomesModelo = new Map(modelos.map(m => [m.id, m.nome]));
 
   const mapaAgregados = new Map(

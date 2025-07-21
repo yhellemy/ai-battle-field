@@ -19,13 +19,11 @@ import {
   MarkLineComponent,
 } from 'echarts/components';
 import VChart, { THEME_KEY } from 'vue-echarts';
-import { ref, provide } from 'vue';
 
 const root = document.documentElement
 
 const el = useTemplateRef('chart')
 const { width, height } = useElementSize(el)
-let intervalId: any | null = null;
 
 use([
   CanvasRenderer,
@@ -37,24 +35,19 @@ use([
   MarkLineComponent,
 ]);
 
+const props = defineProps<{ data: ContarIndicadoresResponse[] | null }>()
 
-const { data, refresh } = useAsyncData('contar-indicadores', async () => await $fetch('/api/contar-indicadores'))
-// provide(THEME_KEY, 'dark');
+const titleTuple = computed(() => props.data?.map((indicador) => indicador.modeloNome) ?? [])
+const valueTuple = computed(() => props.data?.map((indicador) => indicador.mediaIndicadores) ?? [])
 
-const titleTuple = computed(() => data.value ? data.value.map((indicador) => indicador.modeloNome) : [])
-const valueTuple = computed(() => data.value ? data.value.map((indicador) => indicador.mediaIndicadores) : [])
 
-/* [
-  '#13a538', 
-  '#f9b03d',
-  '#f39323',
-  '#d56f24',
-  '#00776f',
-  '#03504b',
-  '#074223'
-] */
 const option = computed(() => ({
-  color: '#13a538',
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'shadow'
+    }
+  },
   xAxis: {
     type: 'category',
     data: titleTuple.value,
@@ -86,33 +79,34 @@ const option = computed(() => ({
   },
   series: [
     {
-      data: valueTuple.value,
+      data: valueTuple.value.map((value) => ({
+        value: value,
+        itemStyle: {
+          color: getColorByIndex(0)
+        }
+      })),
       type: 'bar',
       showBackground: true,
       backgroundStyle: {
         color: getComputedStyle(root).getPropertyValue('--ui-border')
       },
       markLine: {
-        symbol: 'none', // Remove as setas nas pontas da linha
+        symbol: 'none',
         data: [
           {
-            yAxis: 85, // Posição da linha no eixo Y (85% de 200)
+            yAxis: 85,
             name: '85%',
             lineStyle: {
-              color: '#f39323', // Cor da linha
-              type: 'dashed' // Estilo da linha (pode ser 'solid', 'dashed', 'dotted')
+              color: '#f39323',
+              type: 'dashed'
             },
             label: {
               show: true,
               position: 'end',
               formatter: '{b}',
-              // Cor do texto
               color: getComputedStyle(root).getPropertyValue('--ui-text'),
-              // Cor de fundo (borda)
               backgroundColor: getComputedStyle(root).getPropertyValue('--ui-bg'),
-              // Espaçamento para o fundo aparecer
               padding: [5, 10],
-              // Bordas arredondadas
               borderRadius: 4,
             }
           }
@@ -121,12 +115,4 @@ const option = computed(() => ({
     }
   ]
 }));
-
-onMounted(() => {
-  intervalId = setInterval(refresh, 10000);
-});
-
-onBeforeUnmount(() => {
-  clearInterval(intervalId);
-});
 </script>
