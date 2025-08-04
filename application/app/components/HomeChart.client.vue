@@ -82,7 +82,7 @@ const option = computed(() => ({
       data: valueTuple.value.map((value) => ({
         value: value,
         itemStyle: {
-          color: getColorByIndex(0)
+          color: "#00c951", 
         }
       })),
       type: 'bar',

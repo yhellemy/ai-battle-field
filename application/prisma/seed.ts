@@ -1,27 +1,15 @@
 import { PrismaClient, TipoMetrica, Provider } from '@prisma/client'
+import { Index } from "@upstash/vector"
 import comprTextualJson from './compreensao-textual.json'
 import clarezaResJson from './clareza-resposta.json'
-
-import { type ClarezaRespostaQuestao, type ComprTextualQuestion } from '~~/shared/utils/types'
+import { cartas, perguntas } from './cartas-servico.json'
 
 const prisma = new PrismaClient()
 
 async function main() {
-await prisma.provedores.create({
+  await prisma.provedores.create({
     data: {
       nome: Provider.ollama,
-      modelos: {
-/*         createMany: {
-          data: [
-            {
-              nome: 'gemma3:latest'
-            },
-            {
-              nome: 'deepseek-r1:8b',
-            },
-          ]
-        } */
-      }
     }
   })
 
@@ -36,6 +24,13 @@ await prisma.provedores.create({
     data: {
       metricas: 'Clareza da resposta',
       tipo: TipoMetrica.ClarezaResposta,
+    }
+  })
+
+  const et = await prisma.metricas.create({
+    data: {
+      metricas: 'Teste do embed',
+      tipo: TipoMetrica.TesteDoEmbed,
     }
   })
 
@@ -77,11 +72,57 @@ await prisma.provedores.create({
           texto: item.texto,
           gabarito: item.gabarito
         } satisfies ClarezaRespostaQuestao,
-        gabarito: { resposta: item.gabarito },
+        gabarito: { resposta: item.gabarito } satisfies ClarezaRespostaGabarito,
       }
     })//.filter((item, index) => 20 > index)
   })
+
+  await prisma.bancoDeQuestoes.createMany({
+    data: perguntas.map((item) => {
+      return {
+        metricaId: et.id,
+        pergunta: {
+          pergunta: item.pergunta
+        } satisfies TesteDoEmbedQuestion,
+        gabarito: {} satisfies TesteDoEmbedGabarito,
+      }
+    })
+  })
   
+  if (process.env.UPSTASH_VECTOR_REST_URL && process.env.UPSTASH_VECTOR_REST_TOKEN) {
+    const index = new Index({
+      url: process.env.UPSTASH_VECTOR_REST_URL,
+      token: process.env.UPSTASH_VECTOR_REST_TOKEN,
+    })
+
+    const oque = cartas.map((item, i) => index.upsert({
+      id: "cartas-oque-"+i,
+      data: item.oque,
+      metadata: {
+        title: `O que é o serviço "${item.nome}" do órgão "${item.orgao}"`,
+      },
+    }))
+
+    const quem = cartas.map((item, i) => index.upsert({
+      id: "cartas-quem-"+i,
+      data: item.quem,
+      metadata: {
+        title: `Para quem é o serviço "${item.nome}" do órgão "${item.orgao}"`,
+      },
+    }))
+
+    const como = cartas.map((item, i) => index.upsert({
+      id: "cartas-como-"+i,
+      data: item.como,
+      metadata: {
+        title: `Como utilizar o serviço "${item.nome}" do órgão "${item.orgao}"`,
+      },
+    }))
+
+    const embeddings = [oque, quem, como].flat(2)
+
+    await Promise.all(embeddings)
+  }
 
 /*   const modelos = await prisma.modelos.findMany()
 

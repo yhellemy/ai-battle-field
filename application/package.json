@@ -22,8 +22,10 @@
   },
   "devDependencies": {
     "@langchain/core": "^0.3.66",
+    "@langchain/google-genai": "^0.2.16",
     "@langchain/ollama": "^0.2.3",
     "@types/bun": "^1.2.19",
+    "@upstash/vector": "^1.2.2",
     "chart.js": "^4.5.0",
     "prisma": "^6.12.0",
     "vue-echarts": "^7.0.3",

@@ -4,7 +4,8 @@ export * from './motor-calculo/index'
 
 export const motor = {
   [TipoMetrica.CompreensaoTextual]: compreensaoTextualEngine,
-  [TipoMetrica.ClarezaResposta]: clarezaRespostaEngine
+  [TipoMetrica.ClarezaResposta]: clarezaRespostaEngine,
+  [TipoMetrica.TesteDoEmbed]: testeDoEmbedEngine,
 } as const
 
 export async function processarIndicador(metrica: TipoMetrica, output: any, gabarito: any) {
@@ -31,11 +32,9 @@ export async function processarResultado(idResultado: number) {
 
   const indicador = await processarIndicador(resultado.tipoResultado, resultado.jsonResultado, resultado.bancoDeQuestoes.gabarito)
 
-  return await prisma.indicadores.create({
-    data: {
-      indicador,
-      modeloId: resultado.modeloId,
-      metricaId: resultado.bancoDeQuestoes.metricaId
-    }
-  })
+  return {
+    indicador,
+    modeloId: resultado.modeloId,
+    metricaId: resultado.bancoDeQuestoes.metricaId
+  }
 }

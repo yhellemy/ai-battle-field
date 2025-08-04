@@ -1,0 +1,202 @@
+{
+  "cartas": [
+    {
+      "nome": "Consulta Multas de Veículos de Outra UF",
+      "resumo": "A consulta e emissão de boletos para infrações de trânsito cometidas no estado de Goiás por veículos registrados em outras Unidades Federativas (UFs) são processos simplificados graças ao serviço de “Consultar Multas de Outra UF”. Nesta página, explicaremos o que é esse serviço, quem pode solicitá-lo e como utilizá-lo eficazmente.",
+      "oque": "“Consulta Multas de Veículo de Outra UF” é um serviço público oferecido pelo Departamento Estadual de Trânsito de Goiás (Detran-GO) que permite a consulta e emissão de boletos para infrações de trânsito cometidas em Goiás por veículos registrados em outras UFs. Com este serviço, os proprietários de veículos de fora de Goiás podem acessar informações sobre multas e pagar os boletos correspondentes, mantendo-se em conformidade com a legislação de trânsito.",
+      "quem": "Qualquer pessoa interessada pode solicitar o serviço, desde que possua em mãos o número da placa do veículo em questão. Isso significa que tanto o proprietário do veículo quanto terceiros interessados, como condutores ou responsáveis pelo pagamento das multas, podem utilizar essa ferramenta para realizar consultas e gerar boletos.",
+      "como": "Utilizar o serviço “Consultar Multas de Outra UF” é simples e direto. Siga os passos abaixo para aproveitar esta facilidade: Informe o número da placa do veículo para o qual deseja consultar as multas. Acione a opção “Consultar” para iniciar o processo de consulta. Na página de resultados, selecione as multas específicas que deseja quitar ou obter informações detalhadas. Ao selecionar as multas, você terá a opção de gerar o Documento Único de Arrecadação (DUA) ou boletos individuais para pagamento. Este serviço foi projetado para simplificar o processo de consulta e pagamento de multas de trânsito em Goiás para veículos registrados em outros estados. Garanta que você esteja em dia com suas obrigações de trânsito e utilize esta ferramenta de maneira eficaz e conveniente. Se você tiver dúvidas ou precisar de assistência adicional ao usar o serviço “Consulta Multas de Veículo de Outra UF”, consulte as seções relevantes deste site ou entre em contato conosco. Estamos aqui para ajudar a facilitar o cumprimento das obrigações legais de trânsito em Goiás.",
+      "orgao": "Detran"
+    },
+    {
+      "nome": "Curso de Reciclagem Preventivo",
+      "resumo": "A página “Fazer Curso de Reciclagem” oferece informações essenciais sobre o serviço de reciclagem de CNH (Carteira Nacional de Habilitação) no Detran-GO. Este serviço é destinado a condutores que precisam realizar um curso de reciclagem, seja por motivos preventivos ou como parte da penalização por infrações de trânsito.",
+      "oque": "É um serviço que contempla a inscrição em um curso de reciclagem. O curso de reciclagem provê ao condutor uma revisão das normas, sinalizações de trânsito e atualização sobre as novas legislações vigentes.",
+      "quem": "Condutores com categorias de CNH C, D ou E, que exercem atividade remunerada e acumularam entre 14 e 19 pontos em sua CNH.",
+      "como": "O condutor pode escolher entre a modalidade presencial ou à distância. Para o curso presencial, basta selecionar uma turma para aulas presenciais. Na modalidade à distância, o condutor deve agendar o exame teórico após concluir o curso online oferecido por instituições de ensino credenciadas pelo DETRAN-GO. Independentemente da modalidade escolhida, o pagamento da taxa é obrigatório.",
+      "orgao": "Detran"
+    },
+    {
+      "nome": "Curso de Reciclagem para Condutores Infratores:",
+      "resumo": "É um serviço que contempla a inscrição em um curso de reciclagem. O curso de reciclagem provê ao condutor uma revisão das normas, sinalizações de trânsito e atualização sobre as novas legislações vigentes.",
+      "oque": "É um serviço que contempla a inscrição em um curso de reciclagem. O curso de reciclagem provê ao condutor uma revisão das normas, sinalizações de trânsito e atualização sobre as novas legislações vigentes.",
+      "quem": "Condutores que tiveram seu direito de dirigir suspenso ou cassado, estiveram envolvidos em acidentes graves ou foram condenados judicialmente por delitos de trânsito.",
+      "como": " O processo é semelhante ao curso preventivo, permitindo a escolha entre as modalidades presencial ou à distância. O pagamento da taxa também é necessário.",
+      "orgao": "Detran"
+    },
+    {
+      "nome": "Agendar consultas, tratamentos e exames radiológicos odontológicos",
+      "resumo": "Reabilitação oral com prótese total e prótese unitária,Diagnóstico de lesões da cavidade bucal,Endodontia,Cirurgias odontológicas ambulatoriais,Periodontia,Reabilitação neuro oclusal/ortopedia,Ortodontia,Radiologia odontológica,aparelhos nos dentes,canal de dentes,machucados dentro da boca,tratamento de dentes",
+      "oque": "Reabilitação oral - reconstrução parcial ou total dos dentes com prótese total e/ou prótese unitária, se necessário for; Endodontia - tratamento de canal de dentes e retratamento; Periodontia - cuida das gengivas e ossos que dão suporte aos dentes; Reabilitação Neuro Oclusal (RNO)/ ortopedia - tratamento precoce do desenvolvimento ósseo dos dentes, evitando futuros problemas de má oclusão (alinhamento dos dentes); Ortodontia - tratamento que visa ao restabelecimento da posição correta dos dentes e à correção do alinhamento dos dentes (aparelhos); Radiologia Odontológica – exames com tomadas radiográﬁcas (Raio X) que têm a finalidade de auxiliar na identificação de doenças e de elaborar tratamentos apropriados para cada situação (periapicais, bite wing, oclusais e panorâmicas); Cirurgia Buco Maxilofacial Cirurgia ambulatorial (em consultório) na cavidade oral (boca) que atua nos traumas e fraturas dos ossos da face, doenças e tumores dos maxilares, deformidades do crânio, doenças da Articulação Mandibular (ATM), entre outras.",
+      "quem": "Pessoas que utilizam os serviços do SUS e estão cadastradas na Central de Regulação Estadual (SERVIR)",
+      "como": "Etapa 1 Ser cadastrado no Sistema da Central de Regulação da Secretaria de Estado da Saúde - SES/GO (SERVIR). Depois da sua consulta, a Unidade Básica de Saúde (Posto de Saúde, CAIS ou CIAMS) colocará o seu nome no Sistema da Central de Regulação Estadual (SERVIR). Etapa 2 Aguardar agendamento Nós ligaremos prá você quando a sua vaga for disponibilizada no Sistema da Central de Regulação Estadual (SERVIR). Nessa ligação, sua consulta será agendada e você receberá data e horário marcados.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                Etapa 3 Ser atendido presencialmente No dia do primeiro atendimento: - Você apresentará os documentos solicitados durante a ligação de agendamento (documentos pessoais, cartão SUS, comprovante de endereço, encaminhamento da unidade básica através do Sistema de Regulação); e - Seu tratamento começará.                                                                                                                                                                                                                                                           Etapa 4 Continuar e finalizar o tratamento Todo o restante do tratamento ocorrerá de acordo com a agenda interna da COEG.",
+      "orgao": "SES"
+    },
+    {
+      "nome": "Solicitar Fatura Digital de Água",
+      "resumo": "Também conhecido como: Fatura Digital",
+      "oque": "É o serviço que permite ao usuário solicitar que sua fatura de água mude da modalidade impressa para digital.",
+      "quem": "Proprietário (empreendedor) ou locatário, sendo pessoa física ou jurídica. Apresentar documentos pessoais; Informar o e-mail para receber a fatura; Para usar a Agência Virtual, é preciso ter cadastro com número de conta, e-mail e senha no site da Saneago: www.saneago.com.br; No atendimento via Chat, call center e WhatsApp, é necessário confirmar os dados do titular.",
+      "como": "Etapa 1 Solicitação do usuário Usuário procura um dos canais de atendimento para solicitar emissão da fatura digital (e-mail). ​Para atendimento online: O usuário pode consultar o histórico das últimas faturas de água segindo os seguintes passos: -clicar no botão acesar: - fazer login na conta gov.br escolher a unidade consumidora. Para atendimento presencial: O usuário deve se dirigir a uma das unidades vapt vupt ou escritórios locais no interior. Requisitos/ Documentos Necessários Ser o titular atual da fatura do imóvel ou representante legal com procuração registrada em cartório com firma reconhecida; Apresentar documentação pessoal; Informar endereço eletrônico (e-mail) onde deseja receber a fatura; Para atendimento por meio da Agência Virtual é necessário possuir cadastro com número de conta, e-mail e senha na Agência Virtual, disponibilizada no site da saneago: www.saneago.com.br; No atendimento via Chat, call center e Whatsapp é necessária a confirmação dos dados do titular.",
+      "orgao": "SANEAGO"
+    },
+    {
+      "nome": "Registrar denúncia junto ao PROCON",
+      "resumo": "Denúncia,atendimento",
+      "oque": "Serviço que permite ao cidadão denunciar irregularidades cometidas por fornecedores de bens ou serviços contra os direitos dos consumidores.",
+      "quem": "Cidadão interessado - Possuir os dados (nome, CNPJ ou CPF, endereço, etc) do fornecedor a ser denunciado; - Possuir cadastro no gov.br.",
+      "como": "Passo a Passo Etapa 1 Preencher ocorrência Realize o serviço através dos passos: 1- Clicar no botão \"ACESSAR\" deste site; 2- Ler as informações da tela; 3- Marcar o tipo de ocorrência; 4- Preencher as informações; 5- Salvar a ocorrência. Etapa 2 Aguardar Análise da Ocorrência Após análise, você recebe um email com um endereço eletrônico em até 24 horas. O boletim é disponibilizado em caso de aprovação. Em caso de reprovação, é possível a correção. Após aprovação, a alteração só é possível na delegacia atribuída. O nome da delegacia é informado no cabeçalho do Boletim de ocorrência. Etapa 3 Gerar o Boletim de Ocorrência Aprovado Acesse o boletim de ocorrência definitivo pelos passos: 1- Acessar o email do cadastro; 2- Clicar no endereço eletrônico do boletim; 3- O boletim de ocorrência é fornecido.",
+      "orgao": "PROCON"
+    },
+    {
+      "nome": "Registrar Ocorrência na Delegacia Virtual",
+      "resumo": "Também conhecido como: BO Virtual,RAI Virtual,boletim online ,Boletim de ocorrência via internet,rai",
+      "oque": "O serviço em que o usuário cadastra ocorrência na Delegacia Virtual. O serviço é destinado às seguintes ocorrências: -Violência contra mulher - Injúria, ameaça ou dano; -Furto de celular, documentos, objetos e / ou valores; -Perda ou Extravio de documentos e objetos;  -Desaparecimento de pessoa; -Acidente de trânsito sem vítima; -Danos materiais; -Estelionato; -Crimes de maus tratos contra animais.",
+      "quem": "Vítima ou comunicante da ocorrência. Ter mais de 18 anos. Vítima ou Comunicante de Ocorrência menor de 18 anos. Ser representado pelo responsável legal. Pessoa Jurídica. Possuir dados da empresa (Nome, Razão Social e CNPJ).",
+      "como": "Para realizar o serviço, primeiramente, clique no botão \"ACESSAR\" neste site e leia as informações na tela. Em seguida, marque o tipo de ocorrência, preencha as informações necessárias e, por fim, salve a ocorrência.",
+      "orgao": "SSP"
+    }
+  ],
+  "perguntas": [
+  {
+    "pergunta": "Como agendar um tratamento de canal pelo SUS em Goiânia?",
+    "servico_relacionado": "Agendar consultas, tratamentos e exames radiológicos odontológicos"
+  },
+  {
+    "pergunta": "Fui assaltado e levaram só o meu celular.",
+    "servico_relacionado": "Registrar Ocorrência na Delegacia Virtual"
+  },
+  {
+    "pergunta": "Minha CNH é categoria E. O pessoal da empresa disse que se eu chegar em 14 pontos, tenho que fazer um curso. Tem como fazer online?",
+    "servico_relacionado": "Curso de Reciclagem Preventivo"
+  },
+  {
+    "pergunta": "Quais são os requisitos para fazer o curso de reciclagem preventivo da CNH?",
+    "servico_relacionado": "Curso de Reciclagem Preventivo"
+  },
+  {
+    "pergunta": "Comprei um fogão e ele veio com defeito. A loja não quer trocar. Onde eu reclamo disso?",
+    "servico_relacionado": "Registrar denúncia junto ao PROCON"
+  },
+  {
+    "pergunta": "É preciso ir no Vapt Vupt pra pedir pra minha conta da Saneago vir pro meu email?",
+    "servico_relacionado": "Solicitar Fatura Digital de Água"
+  },
+  {
+    "pergunta": "O dono da casa que aluguei falou pra eu me cadastrar pra receber a conta de água por e-mail. Como que eu faço isso?",
+    "servico_relacionado": "Solicitar Fatura Digital de Água"
+  },
+  {
+    "pergunta": "Tô preocupado com umas multas antigas. Dizem que se for de outro estado é mais difícil de ver, mas tem como checar isso?",
+    "servico_relacionado": "Consulta Multas de Veículos de Outra UF"
+  },
+  {
+    "pergunta": "Acho que a conta de água de casa tá vindo errada e não consigo acessar online. Queria ver as últimas faturas.",
+    "servico_relacionado": "Solicitar Fatura Digital de Água"
+  },
+  {
+    "pergunta": "Como faço uma denúncia contra uma loja que está vendendo produtos com prazo de validade vencido?",
+    "servico_relacionado": "Registrar denúncia junto ao PROCON"
+  },
+  {
+    "pergunta": "Quais documentos são necessários para registrar uma denúncia no Procon?",
+    "servico_relacionado": "Registrar denúncia junto ao PROCON"
+  },
+  {
+    "pergunta": "Minha carteira foi cassada e agora não posso dirigir. Eu preciso saber como eu pego ela de volta. O que que eu faço?",
+    "servico_relacionado": "Curso de Reciclagem para Condutores Infratores"
+  },
+  {
+    "pergunta": "Qual o procedimento para reverter a suspensão da CNH após completar o curso de reciclagem?",
+    "servico_relacionado": "Curso de Reciclagem para Condutores Infratores"
+  },
+  {
+    "pergunta": "Tô vendendo um carro pra um cara do Tocantins. Ele quer ter certeza que não tem multa aqui em Goiás. Tem como ele mesmo consultar isso?",
+    "servico_relacionado": "Consulta Multas de Veículos de Outra UF"
+  },
+  {
+    "pergunta": "Como faço para me matricular no curso de reciclagem para condutores que tiveram a CNH suspensa?",
+    "servico_relacionado": "Curso de Reciclagem para Condutores Infratores"
+  },
+  {
+    "pergunta": "Minha mãe tá precisando de uma prótese dentária. Ela já foi no posto e disseram que vão ligar pra agendar. É assim mesmo que funciona?",
+    "servico_relacionado": "Agendar consultas, tratamentos e exames radiológicos odontológicos"
+  },
+  {
+    "pergunta": "O vizinho aqui de Minas Gerais tá com a pulga atrás da orelha, acha que tomou multa em Caldas Novas. Ele me pediu pra ver se tem como pagar sem ter que ir lá no Detran.",
+    "servico_relacionado": "Consulta Multas de Veículos de Outra UF"
+  },
+  {
+    "pergunta": "Fui na loja e o vendedor me enganou. Quero denunciar o que ele fez, mas não sei pra quem.",
+    "servico_relacionado": "Registrar denúncia junto ao PROCON"
+  },
+  {
+    "pergunta": "Quero solicitar a fatura digital da Saneago. Como proceder?",
+    "servico_relacionado": "Solicitar Fatura Digital de Água"
+  },
+  {
+    "pergunta": "Preciso do boleto de uma multa que levei com o carro do meu tio de Brasília. Onde eu consigo?",
+    "servico_relacionado": "Consulta Multas de Veículos de Outra UF"
+  },
+  {
+    "pergunta": "A vizinha de cima tá brigando com o marido dela todo dia. Dizem que teve ameaça. O que ela pode fazer?",
+    "servico_relacionado": "Registrar Ocorrência na Delegacia Virtual"
+  },
+  {
+    "pergunta": "Meu vizinho bateu no meu carro estacionado e fugiu.",
+    "servico_relacionado": "Registrar Ocorrência na Delegacia Virtual"
+  },
+  {
+    "pergunta": "Minha conta de água tá sumindo. O carteiro não entrega. Tem como eu pedir pra ela vir por e-mail?",
+    "servico_relacionado": "Solicitar Fatura Digital de Água"
+  },
+  {
+    "pergunta": "Fui no dentista do posto de saúde e ele disse que eu preciso de um raio-x especial dos dentes. Não sei onde fazer, como que funciona?",
+    "servico_relacionado": "Agendar consultas, tratamentos e exames radiológicos odontológicos"
+  },
+  {
+    "pergunta": "Como me inscrevo no curso de reciclagem para evitar a suspensão da minha carteira?",
+    "servico_relacionado": "Curso de Reciclagem Preventivo"
+  },
+  {
+    "pergunta": "Paguei por um curso online e o conteúdo não era o que foi prometido. Queria fazer uma reclamação formal.",
+    "servico_relacionado": "Registrar denúncia junto ao PROCON"
+  },
+  {
+    "pergunta": "Quero registrar uma ocorrência de acidente de trânsito sem vítimas. Onde eu consigo fazer isso online?",
+    "servico_relacionado": "Registrar Ocorrência na Delegacia Virtual"
+  },
+  {
+    "pergunta": "Rapaz, perdi minha carteira de motorista. O juiz que mandou suspender. Agora tenho que fazer um curso pra pegar ela de volta.",
+    "servico_relacionado": "Curso de Reciclagem para Condutores Infratores"
+  },
+  {
+    "pergunta": "O dente da minha mulher tá doendo demais. Ela foi no postinho e falaram que tem que fazer um canal. Diz que tem que ir pra um lugar especializado e agendar.",
+    "servico_relacionado": "Agendar consultas, tratamentos e exames radiológicos odontológicos"
+  },
+  {
+    "pergunta": "Acho que já juntei muito ponto na minha CNH. Tô com medo de perder o direito de dirigir. Tem alguma coisa que eu possa fazer?",
+    "servico_relacionado": "Curso de Reciclagem Preventivo"
+  },
+  {
+    "pergunta": "Meu primo se envolveu num acidente grave e agora a CNH dele foi suspensa. Tem um curso que ele tem que fazer, né?",
+    "servico_relacionado": "Curso de Reciclagem para Condutores Infratores"
+  },
+  {
+    "pergunta": "Como faço pra consultar e pagar as multas de um carro que não é registrado aqui em Goiás?",
+    "servico_relacionado": "Consulta Multas de Veículos de Outra UF"
+  },
+  {
+    "pergunta": "Quero marcar uma consulta para tratamento de ortodontia pelo SUS. Qual o primeiro passo?",
+    "servico_relacionado": "Agendar consultas, tratamentos e exames radiológicos odontológicos"
+  },
+  {
+    "pergunta": "Sou motorista de caminhão, faço frete. Tão falando que se eu juntar muito ponto, posso fazer um curso pra não perder a carteira. É verdade?",
+    "servico_relacionado": "Curso de Reciclagem Preventivo"
+  },
+  {
+    "pergunta": "Como registrar um boletim de ocorrência de furto de documentos pela internet?",
+    "servico_relacionado": "Registrar Ocorrência na Delegacia Virtual"
+  }
+]
+}

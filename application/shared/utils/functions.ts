@@ -1,4 +1,5 @@
 export function castFirstChar(str: string) {
+  if (typeof str !== 'string') return null
   const char = str.trim()[0]
   if (typeof char === 'undefined') return null
   

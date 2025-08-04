@@ -160,7 +160,7 @@ const barOption = computed(() => ({
         return {
           value: calculateAverage(item.valores),
           groupId: item.modelo,
-          itemStyle: { color: getColorByIndex(0) }
+          itemStyle: { color: "#00c951" }
         }
       }) ?? [],
       universalTransition: {
