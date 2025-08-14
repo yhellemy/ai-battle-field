@@ -24,6 +24,7 @@
     "@langchain/core": "^0.3.66",
     "@langchain/google-genai": "^0.2.16",
     "@langchain/ollama": "^0.2.3",
+    "@langchain/openai": "^0.6.7",
     "@types/bun": "^1.2.19",
     "@upstash/vector": "^1.2.2",
     "chart.js": "^4.5.0",

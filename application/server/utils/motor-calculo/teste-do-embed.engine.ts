@@ -75,7 +75,7 @@ export const AvaliacaoRespostaModeloSchema = z.object({
 });
 
 export async function testeDoEmbedEngine(output: TesteDoEmbedOutput, gabarito: TesteDoEmbedGabarito) {
-  const llm = getModel({ provider: PROVIDERS.GEMINI, model: 'gemini-2.5-flash' })
+  const llm = getModel({ provider: PROVIDERS.AZURE_OPENAI, model: 'gpt-4o' })
 
   if (!llm) throw new Error('invalid llm')
     
@@ -128,7 +128,7 @@ export async function testeDoEmbedEngine(output: TesteDoEmbedOutput, gabarito: T
 
   console.log(res)
 
-  await delay(6000)
+  //await delay(6000)
 
 
   return res.pontuacaoGeral
