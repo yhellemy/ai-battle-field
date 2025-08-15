@@ -50,10 +50,10 @@ export function getModel(providerModel: ModelProvider) {
   else if(providerModel.provider === PROVIDERS.AZURE_OPENAI) {
     llm = new AzureChatOpenAI({
       model: providerModel.model,
-      azureOpenAIApiInstanceName: process.env.AZURE_OPENAI_API_INSTANCE_NAME,
-      azureOpenAIApiDeploymentName: process.env.AZURE_OPENAI_API_DEPLOYMENT_NAME,
       azureOpenAIApiKey: process.env.AZURE_OPENAI_API_KEY,
-      azureOpenAIApiVersion: process.env.AZURE_OPENAI_API_VERSION
+      azureOpenAIApiDeploymentName: process.env.AZURE_OPENAI_API_DEPLOYMENT_NAME,
+      azureOpenAIApiVersion: process.env.AZURE_OPENAI_API_VERSION,
+      azureOpenAIBasePath: process.env.AZURE_OPENAI_BASE_PATH
     })
   }
   else if(llm === undefined) {
