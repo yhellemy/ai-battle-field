@@ -29,3 +29,4 @@ export async function clarezaResposta(modelProvider: ModelProvider, ctx: Clareza
     resposta: res
   }
 }
+
