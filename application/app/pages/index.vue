@@ -48,33 +48,35 @@ onBeforeUnmount(() => {
           </UCard>
         </div>
         <div class="col-span-4 rounded-md grid">
-          <UCard :ui="{ body: '!p-0 grid' }" class="grid">
+          <UCard :ui="{ body: '!p-0 grid items-center', }" class="grid grid-rows-[max-content_1fr]">
             <template #header>
               <div class="grid grid-flow-col justify-between items-center">
                 <div class="grid">
                   <div class="text-lg">
                     Imprecisão e Alucinação (CT)
                   </div>
-                  <div class="text-sm text-[var(--ui-text-dimmed)]"></div>
+                  <div class="text-sm text-[var(--ui-text-dimmed)]">&nbsp;</div>
                 </div>
                 <div>
                   
                 </div>
               </div>
             </template>
-            <AlucinacaoChart v-if="alucinacaoData" :data="alucinacaoData" :metrica="TipoMetrica.CompreensaoTextual" />
+            <div v-if="alucinacaoData">
+              <AlucinacaoChart :data="alucinacaoData" :metrica="TipoMetrica.CompreensaoTextual" />
+            </div>
             <div v-else class="grid h-full"></div>
           </UCard>
         </div>
         <div class="col-span-4 rounded-md grid">
-          <UCard :ui="{ body: '!p-0 grid' }" class="grid">
+          <UCard :ui="{ body: '!p-0 grid items-center', }" class="grid grid-rows-[max-content_1fr]">
             <template #header>
               <div class="grid grid-flow-col justify-between items-center">
                 <div class="grid">
                   <div class="text-lg">
                     Imprecisão e Alucinação (CR)
                   </div>
-                  <div class="text-sm text-[var(--ui-text-dimmed)]"></div>
+                  <div class="text-sm text-[var(--ui-text-dimmed)]">&nbsp;</div>
                 </div>
                 <div>
                   

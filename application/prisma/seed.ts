@@ -3,10 +3,25 @@ import { Index } from "@upstash/vector"
 import comprTextualJson from './compreensao-textual.json'
 import clarezaResJson from './clareza-resposta.json'
 import { cartas, perguntas } from './cartas-servico.json'
+//import { servicos } from './cartas.json'
 
 const prisma = new PrismaClient()
 
 async function main() {
+  /*if (process.env.UPSTASH_VECTOR_REST_URL && process.env.UPSTASH_VECTOR_REST_TOKEN) {
+    const index = new Index({
+      url: process.env.UPSTASH_VECTOR_REST_URL,
+      token: process.env.UPSTASH_VECTOR_REST_TOKEN,
+    })
+    for (let i = 0; i < servicos.length; i++) {
+      const element = servicos[i];
+      if () {
+        
+      }
+      await index.upsert(element)
+    }*/
+  //}
+
   await prisma.provedores.create({
     data: {
       nome: Provider.ollama,
@@ -88,8 +103,7 @@ async function main() {
       }
     })
   })
-  
-  if (process.env.UPSTASH_VECTOR_REST_URL && process.env.UPSTASH_VECTOR_REST_TOKEN) {
+  if (false && process.env.UPSTASH_VECTOR_REST_URL && process.env.UPSTASH_VECTOR_REST_TOKEN) {
     const index = new Index({
       url: process.env.UPSTASH_VECTOR_REST_URL,
       token: process.env.UPSTASH_VECTOR_REST_TOKEN,
@@ -124,6 +138,8 @@ async function main() {
     await Promise.all(embeddings)
   }
 
+
+
 /*   const modelos = await prisma.modelos.findMany()
 
   const indicadores = modelos.map(modelo => ({
@@ -134,9 +150,9 @@ async function main() {
 
   await prisma.indicadores.createMany({
     data: indicadores
-  }) */
+  }) 
 
-  
+  */
 }
 
 main()

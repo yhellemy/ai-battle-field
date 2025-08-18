@@ -93,15 +93,9 @@ const option = computed(() => ({
   },
   legend: {
     top: 'bottom',
-    left: 'center',
-    // A legenda agora mostra os nomes dos modelos
-    data: props.data?.totalErro
-      .filter(e => e.tipo === props.metrica)
-      .map(e => e.modelo) ?? [],
-    textStyle: {
-      color: getComputedStyle(root).getPropertyValue('--ui-text'),
-    }
+    left: 'center'
   },
+
   series: [
     {
       name: 'Desempenho por Modelo',

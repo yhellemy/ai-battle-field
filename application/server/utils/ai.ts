@@ -24,7 +24,7 @@ export function getModel(providerModel: { provider: typeof PROVIDERS.OPENAI; mod
 
 export function getModel(providerModel: { provider: typeof PROVIDERS.AZURE_OPENAI; model: string }): AzureChatOpenAI;
 
-export function getModel(providerModel: ModelProvider): Ollama | ChatGoogleGenerativeAI;
+export function getModel(providerModel: ModelProvider): Ollama | ChatGoogleGenerativeAI | AzureChatOpenAI;
 
 export function getModel(providerModel: ModelProvider) {
   let llm;
@@ -50,10 +50,10 @@ export function getModel(providerModel: ModelProvider) {
   else if(providerModel.provider === PROVIDERS.AZURE_OPENAI) {
     llm = new AzureChatOpenAI({
       model: providerModel.model,
-      azureOpenAIApiKey: process.env.AZURE_OPENAI_API_KEY,
-      azureOpenAIApiDeploymentName: process.env.AZURE_OPENAI_API_DEPLOYMENT_NAME,
-      azureOpenAIApiVersion: process.env.AZURE_OPENAI_API_VERSION,
-      azureOpenAIBasePath: process.env.AZURE_OPENAI_BASE_PATH
+      azureOpenAIApiKey: process.env.AZURE_OPENAI_API_KEY!,
+      azureOpenAIApiDeploymentName: process.env.AZURE_OPENAI_API_DEPLOYMENT_NAME!,
+      azureOpenAIApiVersion: process.env.AZURE_OPENAI_API_VERSION!,
+      azureOpenAIEndpoint: process.env.AZURE_OPENAI_ENDPOINT!,
     })
   }
   else if(llm === undefined) {

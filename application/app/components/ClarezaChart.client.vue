@@ -153,6 +153,15 @@ const barOption = computed(() => ({
       type: 'bar',
       id: 'total',
       showBackground: true,
+      label: {
+        show: true,
+        position: 'top',
+        formatter: (params: any) => {
+          return `${params.value.toFixed(2)}%`;
+        },
+        color: getComputedStyle(root).getPropertyValue('--ui-text'),
+        fontSize: 12,
+      },
       backgroundStyle: {
         color: getComputedStyle(root).getPropertyValue('--ui-border')
       },

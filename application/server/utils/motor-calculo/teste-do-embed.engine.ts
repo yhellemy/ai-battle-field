@@ -25,7 +25,7 @@ export const AvaliacaoRespostaModeloSchema = z.object({
    * sem incorporar conhecimento prévio ou informações externas? [10]
    */
   exclusivamenteBaseadoNoContexto: z.boolean().describe("Indica se a resposta se baseou exclusivamente no contexto fornecido."),
-  comentarioExclusivamenteBaseadoNoContexto: z.string().optional().describe("Comentários adicionais se a resposta não foi exclusivamente baseada no contexto (ex: informações externas identificadas)."),
+  comentarioExclusivamenteBaseadoNoContexto: z.string().optional().nullable().describe("Comentários adicionais se a resposta não foi exclusivamente baseada no contexto (ex: informações externas identificadas)."),
 
   /**
    * 2. Foi Direto e Conciso?
@@ -33,7 +33,7 @@ export const AvaliacaoRespostaModeloSchema = z.object({
    * sem prolixidade desnecessária? [2]
    */
   diretoEConciso: z.boolean().describe("Indica se a resposta foi direta e concisa."),
-  comentarioDiretoEConciso: z.string().optional().describe("Comentários adicionais se a resposta não foi direta e concisa."),
+  comentarioDiretoEConciso: z.string().optional().nullable().describe("Comentários adicionais se a resposta não foi direta e concisa."),
 
   /**
    * 3. Citou Suas Fontes (se aplicável)?
@@ -42,7 +42,7 @@ export const AvaliacaoRespostaModeloSchema = z.object({
    * (Se não houver identificadores de fonte no contexto, esta regra não se aplica.) [3, 4, 11]
    */
   citouFontes: z.enum(['Sim', 'Não', 'Não aplicável']).describe("Indica se o modelo citou suas fontes, se aplicável."),
-  comentarioCitouFontes: z.string().optional().describe("Comentários adicionais se a citação de fontes foi inadequada ou ausente quando necessária."),
+  comentarioCitouFontes: z.string().optional().nullable().describe("Comentários adicionais se a citação de fontes foi inadequada ou ausente quando necessária."),
 
   /**
    * 4. Gerenciou Resposta Incompleta ou Ausente Corretamente?
@@ -51,7 +51,7 @@ export const AvaliacaoRespostaModeloSchema = z.object({
    * não foi possível encontrar uma resposta para esta pergunta."?
    */
   gerenciouRespostaIncompletaCorretamente: z.enum(['Sim', 'Não', 'Não aplicável']).describe("Indica se o modelo gerenciou corretamente a ausência de informações para a resposta."),
-  comentarioGerenciouRespostaIncompletaCorretamente: z.string().optional().describe("Comentários adicionais se o gerenciamento da resposta incompleta foi incorreto (ex: tentou inferir ou adivinhar)."),
+  comentarioGerenciouRespostaIncompletaCorretamente: z.string().optional().nullable().describe("Comentários adicionais se o gerenciamento da resposta incompleta foi incorreto (ex: tentou inferir ou adivinhar)."),
 
   /**
    * 5. Houve Alucinação ou Inferência Não Justificada?
@@ -59,7 +59,7 @@ export const AvaliacaoRespostaModeloSchema = z.object({
    * fornecido (ou seja, o modelo "inventou" algo ou fez uma inferência sem suporte)?
    */
   alucinacaoOuInferenicaNaoJustificada: z.boolean().describe("Indica se a resposta contém alucinação ou inferência não justificada."),
-  comentarioAlucinacaoOuInferenicaNaoJustificada: z.string().optional().describe("Comentários adicionais se houve alucinação ou inferência não justificada, com exemplos se possível."),
+  comentarioAlucinacaoOuInferenicaNaoJustificada: z.string().optional().nullable().describe("Comentários adicionais se houve alucinação ou inferência não justificada, com exemplos se possível."),
 
   /**
    * Pontuação Geral (Opcional):
@@ -71,12 +71,11 @@ export const AvaliacaoRespostaModeloSchema = z.object({
    * Comentários Finais do Avaliador:
    * Quaisquer observações adicionais sobre a conformidade da resposta com as instruções.
    */
-  comentariosFinaisAvaliador: z.string().optional().describe("Comentários adicionais ou observações finais do avaliador."),
+  comentariosFinaisAvaliador: z.string().optional().nullable().describe("Comentários adicionais ou observações finais do avaliador."),
 });
 
 export async function testeDoEmbedEngine(output: TesteDoEmbedOutput, gabarito: TesteDoEmbedGabarito) {
-  const llm = getModel({ provider: PROVIDERS.AZURE_OPENAI, model: 'gpt-4o' })
-
+  const llm = getModel({provider: PROVIDERS.AZURE_OPENAI, model: process.env.AZURE_OPENAI_API_DEPLOYMENT_NAME!})
   if (!llm) throw new Error('invalid llm')
     
   const index = useUpstashIndex()

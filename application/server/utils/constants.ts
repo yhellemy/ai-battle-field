@@ -4,5 +4,5 @@ export const PROVIDERS = {
   OLLAMA: Provider.ollama,
   GEMINI: 'gemini',
   OPENAI: 'openai',
-  AZURE_OPENAI: 'ao'
+  AZURE_OPENAI: 'AzureOpenAI'
 } as const

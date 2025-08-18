@@ -59,6 +59,7 @@ const option = computed(() => ({
     },
     axisLabel: {
       color: getComputedStyle(root).getPropertyValue('--ui-text'),
+      
     }
   },
   yAxis: {
@@ -82,11 +83,21 @@ const option = computed(() => ({
       data: valueTuple.value.map((value) => ({
         value: value,
         itemStyle: {
-          color: "#00c951", 
+          color: "#00c951",
+           
         }
       })),
       type: 'bar',
       showBackground: true,
+      label: {
+        show: true,
+        position: 'top',
+        formatter: (params: any) => {
+          return `${params.value.toFixed(2)}%`;
+        },
+        color: getComputedStyle(root).getPropertyValue('--ui-text'),
+        fontSize: 12,
+      },
       backgroundStyle: {
         color: getComputedStyle(root).getPropertyValue('--ui-border')
       },
@@ -99,6 +110,7 @@ const option = computed(() => ({
             lineStyle: {
               color: '#f39323',
               type: 'dashed'
+              
             },
             label: {
               show: true,
