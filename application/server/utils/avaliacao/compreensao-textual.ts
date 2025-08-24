@@ -42,8 +42,24 @@ export async function compreensaoTextual(modelProvider: ModelProvider, ctx: Comp
   ]);
 
   const res = await chain.invoke({})
+// O padrão especial que você quer identificar
+  const padraoEspecial = '\n</think>\n\n';
+
+  let textoAProcessar: string;
+
+  // Verifica se a resposta do output contém o padrão especial
+  if (res.includes(padraoEspecial)) {
+    // CASO 1: O padrão foi encontrado → pegamos o texto após o padrão
+    const partes = res.split(padraoEspecial);
+    textoAProcessar = (partes[1] || '').trim();
+  } else {
+    // CASO 2: O padrão NÃO foi encontrado → pegamos só a primeira parte
+    const primeiraParte = res.split(/[.\n,]/)[0];
+    textoAProcessar = primeiraParte.trim();
+  }
 
   return {
-    resposta: res
-  }
+    resposta: textoAProcessar
+  };
+ 
 }

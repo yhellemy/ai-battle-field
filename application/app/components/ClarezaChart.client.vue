@@ -143,6 +143,7 @@ const barOption = computed(() => ({
   },
   xAxis: defu(commonAxisStyles, {
     type: 'category',
+    axisLabel: { interval: 0, rotate: 30 },
     data: props.data?.map(item=>item.modelo) ?? [],
   }),
   yAxis: defu(commonAxisStyles, {

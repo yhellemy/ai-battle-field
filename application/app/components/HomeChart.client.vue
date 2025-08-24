@@ -59,6 +59,8 @@ const option = computed(() => ({
     },
     axisLabel: {
       color: getComputedStyle(root).getPropertyValue('--ui-text'),
+      interval: 0, 
+      rotate: 30 
       
     }
   },
@@ -78,6 +80,7 @@ const option = computed(() => ({
       color: getComputedStyle(root).getPropertyValue('--ui-border')
     }
   },
+  
   series: [
     {
       data: valueTuple.value.map((value) => ({

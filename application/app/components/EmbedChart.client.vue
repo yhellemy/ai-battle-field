@@ -22,6 +22,7 @@ import {
   TooltipComponent,
   LegendComponent,
   GridComponent,
+  DataZoomComponent,
 } from 'echarts/components';
 import VChart from 'vue-echarts';
 
@@ -33,6 +34,7 @@ use([
   TooltipComponent,
   LegendComponent,
   GridComponent,
+  DataZoomComponent,
 ]);
 
 // Obtém referências reativas ao elemento do gráfico e suas dimensões.
@@ -93,63 +95,77 @@ const option = computed(() => {
     return {};
   }
 
-  // 1. Extrai os nomes dos modelos (eixo X) e os indicadores únicos (séries/cores).
   const nomes = [...new Set(props.data.map(item => item.nome))];
   const indicadores = [...new Set(props.data.map(item => item.indicador))].sort((a, b) => a - b) as (keyof typeof VALORES)[];
 
-  // 2. Mapeia cada 'indicador' para uma série de dados do ECharts. Cada indicador terá uma cor.
   const series = indicadores.map(indicador => {
     return {
-      name: `${VALORES[indicador]}`, // O nome da série será o indicador.
+      name: `${VALORES[indicador]}`, 
       type: 'bar',
       emphasis: {
         focus: 'series'
       },
-      // Para cada nome de modelo no eixo X, encontra a contagem correspondente para este indicador.
       data: nomes.map(nome => {
         const item = props.data!.find(d => d.nome === nome && d.indicador === indicador);
-        return item ? item.count : 0; // Usa 0 se não houver dados.
+        return item ? item.count : 0; 
       }),
     };
   });
 
-  // 3. Constrói a configuração final do gráfico.
   return {
     color: indicadores.map(indicador => CORES[indicador]),
     tooltip: {
       trigger: 'axis',
       axisPointer: {
-        type: 'shadow', // Mostra uma sombra sobre o grupo de barras do modelo.
+        type: 'shadow', 
       },
     },
     legend: {
-      // A legenda agora é baseada nos indicadores.
-      data: indicadores.map(i => `${VALORES[i]}`),
-      bottom: 10,
-      textStyle: {
-        color: getComputedStyle(root).getPropertyValue('--ui-text'),
+    data: indicadores.map(i => `${VALORES[i]}`),
+    top: 'top',
+    bottom: 'top',
+    textStyle: {
+    color: getComputedStyle(root).getPropertyValue('--ui-text'),
       },
     },
     grid: {
-      left: '3%',
-      right: '4%',
-      bottom: '12%', // Deixa espaço para a legenda e rótulos rotacionados.
-      containLabel: true,
+  left: '3%',
+    right: '4%',
+    bottom: '15%', // Ajustado
+    containLabel: true
     },
     xAxis: defu({
       type: 'category',
-      // Os nomes dos modelos são as categorias no eixo X.
       data: nomes,
       axisLabel: {
-        // Rotaciona os rótulos para evitar sobreposição, já que os nomes podem ser longos.
-        rotate: 360
+        rotate: 30
       }
     }, commonAxisStyles),
     yAxis: defu({
       type: 'value',
       name: 'Count',
     }, commonAxisStyles),
-    // As séries de dados, uma para cada indicador.
+    dataZoom: [
+  {
+    type: 'slider', // Isso cria o slider visual
+    show: true,
+    xAxisIndex: 0,
+    start: 0,
+    end: 100,
+    handleIcon:'diamond',
+    handleSize: '100%',
+    bottom: '2%', // Ajuste a posição para não conflitar com a legenda
+    height: 20,
+    backgroundColor: '808080',
+    borderColor: '#808080',
+    fillerColor: '#D3D3D3',
+    showDataShadow: true,
+    textStyle: {
+      color: getComputedStyle(root).getPropertyValue('--ui-text'),
+    },
+  }
+],
+
     series: series,
   };
 });

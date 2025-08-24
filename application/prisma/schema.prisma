@@ -15,6 +15,7 @@ enum TipoMetrica {
   CompreensaoTextual
   ClarezaResposta
   TesteDoEmbed
+  DireitoAdministrativo
 }
 
 model BancoDeQuestoes {
