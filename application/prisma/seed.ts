@@ -3,6 +3,7 @@ import { Index } from "@upstash/vector"
 import comprTextualJson from './compreensao-textual.json'
 import clarezaResJson from './clareza-resposta.json'
 import { cartas, perguntas } from './cartas-servico.json'
+import direito from './direito-administrativo.json'
 //import { servicos } from './cartas.json'
 
 const prisma = new PrismaClient()
@@ -49,6 +50,13 @@ async function main() {
     }
   })
 
+  const da = await prisma.metricas.create({
+    data: {
+      metricas: 'Direito Administrativo',
+      tipo: TipoMetrica.DireitoAdministrativo,
+    }
+  })
+
   await prisma.bancoDeQuestoes.createMany({
     data: [
       {
@@ -76,7 +84,7 @@ async function main() {
         } satisfies ComprTextualQuestion,
         gabarito: { resposta: item.gabarito },
       }
-    })//.filter((item, index) => 20 > index)
+    }).filter((item, index) => 1 > index)
   })
 
   await prisma.bancoDeQuestoes.createMany({
@@ -89,7 +97,7 @@ async function main() {
         } satisfies ClarezaRespostaQuestao,
         gabarito: { resposta: item.gabarito } satisfies ClarezaRespostaGabarito,
       }
-    })//.filter((item, index) => 20 > index)
+    }).filter((item, index) => 1 > index)
   })
 
   await prisma.bancoDeQuestoes.createMany({
@@ -100,6 +108,22 @@ async function main() {
           pergunta: item.pergunta
         } satisfies TesteDoEmbedQuestion,
         gabarito: {} satisfies TesteDoEmbedGabarito,
+      }
+    }).filter((item, index) => 1 > index)
+  })
+
+  await prisma.bancoDeQuestoes.createMany({
+    data: direito.map((item) => {
+      return {
+        metricaId: da.id,
+        pergunta: {
+          pergunta: item.pergunta,
+          nivel: item.nivel
+        } satisfies DireitoAdmQuestion,
+        gabarito: {
+          gabarito: item.gabarito,
+          justificativa: item.justificativa
+        } satisfies DireitoAdmGabarito,
       }
     })
   })

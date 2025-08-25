@@ -125,8 +125,6 @@ export async function testeDoEmbedEngine(output: TesteDoEmbedOutput, gabarito: T
     model_response: output.resposta
   })
 
-  console.log(res)
-
   //await delay(6000)
 
 

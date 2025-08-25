@@ -13,6 +13,7 @@ const { data: compreensaoChartData, refresh: refreshIndicadores } = useAsyncData
 const { data: clarezaChartData, refresh: refreshClareza } = useAsyncData('contar-clareza', () => $fetch<ClarezaRespostaResponse>('/api/contar-clareza'))
 const { data: alucinacaoData, refresh: refreshAlucinacao } = useAsyncData('alucinacao', () => $fetch<ApiResponseAlucinacao>('/api/alucinacao'))
 const { data: embedtestData, refresh: refreshEmbed } = useAsyncData('embedtest', () => $fetch<TesteDoEmbed[]>('/api/embedtest'))
+const { data: direitoChartData, refresh: refreshDireito } = useAsyncData('direito-adm', () => $fetch<DireitoAdmResponse[]>('/api/direito-adm'))
 
 onMounted(() => {
   intervalId = setInterval(async () => {
@@ -118,6 +119,19 @@ onBeforeUnmount(() => {
               </div>
             </template>
             <EmbedChart v-if="embedtestData" :data="embedtestData" :scatter />
+          </UCard>
+        </div>
+        <div class="col-span-12">
+          <UCard :ui="{ body: '!p-0' }">
+            <template #header>
+              <div class="text-lg">
+                Direito Administrativo
+              </div>
+              <div class="text-sm text-[var(--ui-text-dimmed)]">
+                Avaliação direito
+              </div>
+            </template>
+            <HomeChart v-if="direitoChartData" :data="direitoChartData" />
           </UCard>
         </div>
       </div>

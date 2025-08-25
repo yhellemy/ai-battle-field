@@ -5,6 +5,7 @@ export const avaliacao = {
   [TipoMetrica.CompreensaoTextual]: compreensaoTextual,
   [TipoMetrica.ClarezaResposta]: clarezaResposta,
   [TipoMetrica.TesteDoEmbed]: testeDoEmbed,
+  [TipoMetrica.DireitoAdministrativo]: direitoAdministrativo,
 } as const
 
 export async function processarAvaliacaoLlm(metrica: TipoMetrica, modelo: ModelProvider, ctx: any) {
@@ -115,14 +116,20 @@ export async function processarModelo(ids?: number[]) {
 
   return await Promise.all(mapeado.map(async (item) => {
     const modelTasks = await Promise.all(item.pendente.map(async (id) => {
-      const { data: resultado} = await asyncEnvelope(async () => processarQuestao(id, item.idModelo))
+      const { data: resultado, error: questionError } = await asyncEnvelope(async () => processarQuestao(id, item.idModelo))
+      if (questionError) console.log(questionError)
+        
       if (!resultado) throw new Error('falha ao processar questão ' + id)
-      const { data: resultadoProcessado } = await asyncEnvelope(async () => processarResultado(resultado.id))
+      const { data: resultadoProcessado, error: resultError } = await asyncEnvelope(async () => processarResultado(resultado.id))
       if (!resultadoProcessado) throw new Error('falha ao processar resultado ' + resultado.id)
 
-      const { data: indicador } = await asyncEnvelope(async () => await prisma.indicadores.create({
+      if (resultError) console.log(resultError)
+
+      const { data: indicador, error: indicadorError } = await asyncEnvelope(async () => await prisma.indicadores.create({
         data: resultadoProcessado
       }))
+
+      if (indicadorError) console.log(indicadorError)
 
       if (!indicador) throw new Error('falha ao armazenar resultado processado ' + resultado.id)
 

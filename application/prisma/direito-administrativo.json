@@ -1,0 +1,19 @@
+[
+  {
+    "pergunta": "No serviço público, a hierarquia é essencial para garantir a ordem e a eficiência no cumprimento das funções. No entanto, o servidor público pode recusar ordens superiores quando considerar que elas não são adequadas, sem necessidade de justificativa ou fundamentação legal.",
+"nivel": "Facil",
+"gabarito": "false",
+    "justificativa": "A hierarquia no serviço público determina que os servidores devem cumprir ordens superiores, desde que não sejam ilegais ou contrárias às normas vigentes."
+  },
+  {
+    "pergunta": "De acordo com Lei de Acesso a Informacao os órgãos públicos devem divulgar proativamente informações de interesse coletivo em sítios eletrônicos mantidos pelos órgãos.",
+"nivel": "Facil",
+"gabarito": "true",
+"justificativa": "O art. 8º da Lei n.º 12.527/2011 diz que é dever dos órgãos e entidades públicas promover, independentemente de requerimentos, a divulgação em local de fácil acesso, no âmbito de suas competências, de informações de interesse coletivo ou geral por eles produzidas ou custodiadas."
+  },
+  {
+    "pergunta": "Considerando o Estatuto Jurídico da Empresa Pública, da Sociedade de Economia Mista e de suas Subsidiárias. O regime específico licitatório previsto para as empresas públicas e sociedades de economia mista não contempla a hipótese de dispensa de licitação para a transferência de bens a órgãos e entidades da administração pública, nem mesmo quando é efetivada mediante permuta.",
+"nivel": "Facil",
+"gabarito": "false",
+"justificativa": "Segundo a Lei n.º 13.303/2016. O regime específico licitatório previsto para as empresas públicas e sociedades de economia mista contempla a hipótese de dispensa de licitação para a transferência de bens a órgãos e entidades da administração pública, inclusive quando efetivada mediante permuta."
+  }]

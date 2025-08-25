@@ -66,6 +66,13 @@ export type ModeloDados = {
 };
 
 export type ClarezaRespostaResponse = ModeloDados[];
+export type DireitoAdmResponse = {
+  modeloId: number;
+  modeloNome: string;
+  totalIndicadores: number;
+  mediaIndicadores: number;
+  metricas: Metrica[];
+};
 
 // alucinação
 
@@ -120,4 +127,18 @@ export interface AlucinacaoDetalhada {
 export interface ApiResponseAlucinacao {
   totalErro: ErroDetalhado[];
   totalAlucinacao: AlucinacaoDetalhada[];
+}
+
+export type DireitoAdmOutput = {
+  resposta: string
+}
+
+export type DireitoAdmQuestion = {
+  pergunta: string,
+  nivel: string
+}
+
+export type DireitoAdmGabarito = {
+  gabarito: string,
+  justificativa: string,
 }
