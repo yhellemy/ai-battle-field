@@ -1,3 +1,5 @@
+export * from '@prisma/client'
+
 export type ComprTextualQuestion = {
   categoria: string,
   premissa: string,
@@ -27,6 +29,15 @@ export type TesteDoEmbedQuestion = {
 }
 
 export type TesteDoEmbedOutput = {
+  pergunta: string
+  resposta: string
+}
+
+export interface TesteGenericoInput {
+  pergunta: string
+}
+
+export interface TesteGenericoOutput {
   pergunta: string
   resposta: string
 }

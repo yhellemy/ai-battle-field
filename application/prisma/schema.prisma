@@ -16,6 +16,7 @@ enum TipoMetrica {
   ClarezaResposta
   TesteDoEmbed
   DireitoAdministrativo
+  Matematica
 }
 
 model BancoDeQuestoes {
