@@ -1,8 +1,17 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { fileURLToPath  } from 'node:url'
 export default defineNuxtConfig({
   vite: {
     server: {
       allowedHosts: true
+    },
+    resolve: {
+      // fix for vite/prisma build issue
+      alias: {
+        '.prisma/client/index-browser': fileURLToPath(
+          new URL('./node_modules/@prisma/client/index-browser.js', import.meta.url),
+        ),
+      },
     },
   },
   compatibilityDate: '2025-05-15',

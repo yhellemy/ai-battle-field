@@ -3,6 +3,7 @@ import { ChatPromptTemplate } from "@langchain/core/prompts"
 import { RunnableSequence } from "@langchain/core/runnables"
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import z from "zod";
+import { AvailableProviders } from "../types";
 
 function delay(time: number) {
   return new Promise(resolve => setTimeout(resolve, time));
@@ -75,7 +76,7 @@ export const AvaliacaoRespostaModeloSchema = z.object({
 });
 
 export async function testeDoEmbedEngine(output: TesteDoEmbedOutput, gabarito: TesteDoEmbedGabarito) {
-  const llm = getModel({provider: PROVIDERS.AZURE_OPENAI, model: process.env.AZURE_OPENAI_API_DEPLOYMENT_NAME!})
+  const llm = getModel({provider: process.env.EMBED_TEST_PROVIDER! as "gemini", model: process.env.EMBED_TEST_MODEL!})
   if (!llm) throw new Error('invalid llm')
     
   const index = useUpstashIndex()

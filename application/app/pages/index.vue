@@ -128,7 +128,7 @@ onBeforeUnmount(() => {
                 Direito Administrativo
               </div>
               <div class="text-sm text-[var(--ui-text-dimmed)]">
-                Avaliação direito
+                Avaliação de Veracidade BoolQ
               </div>
             </template>
             <HomeChart v-if="direitoChartData" :data="direitoChartData" />

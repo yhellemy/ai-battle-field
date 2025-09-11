@@ -131,7 +131,7 @@ const option = computed(() => {
     grid: {
   left: '3%',
     right: '4%',
-    bottom: '15%', // Ajustado
+    bottom: '15%', 
     containLabel: true
     },
     xAxis: defu({
@@ -147,18 +147,18 @@ const option = computed(() => {
     }, commonAxisStyles),
     dataZoom: [
   {
-    type: 'slider', // Isso cria o slider visual
+    type: 'slider', 
     show: true,
     xAxisIndex: 0,
     start: 0,
     end: 100,
-    handleIcon:'diamond',
+    handleIcon:'circle',
     handleSize: '100%',
-    bottom: '2%', // Ajuste a posição para não conflitar com a legenda
+    bottom: '2%', 
     height: 20,
-    backgroundColor: '808080',
-    borderColor: '#808080',
-    fillerColor: '#D3D3D3',
+    backgroundColor:'#00c951',
+    borderColor: getComputedStyle(root).getPropertyValue('--ui-border'),
+    fillerColor: getComputedStyle(root).getPropertyValue('--ui-border'),
     showDataShadow: true,
     textStyle: {
       color: getComputedStyle(root).getPropertyValue('--ui-text'),

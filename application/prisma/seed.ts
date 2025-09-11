@@ -62,12 +62,12 @@ async function main() {
       {
         metricaId: tx.id,
         pergunta: {
-          categoria: 'Segurança Pública',
-          premissa: 'A saneago tem ampliado a rede de esgoto',
-          hipotese: 'A companhia de saneamento de goiás está expandindo o saneamento básico',
+          categoria: 'Meio Ambiente',
+          premissa: 'Plantar árvores melhora a qualidade do ar.',
+          hipotese: 'A arborização contribui para um ambiente mais saudável.',
           nivel: 'Fácil'
         } satisfies ComprTextualQuestion,
-        gabarito: { resposta: 'implicação' },
+        gabarito: { resposta: 'Implicação' },
       }
     ]
   })
@@ -84,7 +84,7 @@ async function main() {
         } satisfies ComprTextualQuestion,
         gabarito: { resposta: item.gabarito },
       }
-    }).filter((item, index) => 1 > index)
+    })//.filter((item, index) => 10 > index)
   })
 
   await prisma.bancoDeQuestoes.createMany({
@@ -97,7 +97,7 @@ async function main() {
         } satisfies ClarezaRespostaQuestao,
         gabarito: { resposta: item.gabarito } satisfies ClarezaRespostaGabarito,
       }
-    }).filter((item, index) => 1 > index)
+    })//.filter((item, index) => 10 > index)
   })
 
   await prisma.bancoDeQuestoes.createMany({
@@ -109,7 +109,7 @@ async function main() {
         } satisfies TesteDoEmbedQuestion,
         gabarito: {} satisfies TesteDoEmbedGabarito,
       }
-    }).filter((item, index) => 1 > index)
+    })//.filter((item, index) => 30 > index)
   })
 
   await prisma.bancoDeQuestoes.createMany({

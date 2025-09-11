@@ -100,9 +100,9 @@
   {
     "categoria": "Segurança Pública",
     "premissa": "A vizinhança criou um grupo de vigilância solidária para trocar informações sobre segurança.",
-    "hipotese": "Os moradores do bairro estão preocupados com a segurança e decidiram ir morar em outra cidade.",
+    "hipotese": "Os moradores do bairro estão preocupados com a segurança.",
     "nivel": "Fácil",
-    "gabarito": "Neutro"
+    "gabarito": "Implicação"
   },
   {
     "categoria": "Saúde",
@@ -170,9 +170,9 @@
   {
     "categoria": "Meio Ambiente",
     "premissa": "A coleta seletiva foi implementada em novos bairros da zona sul.",
-    "hipotese": "A zona norte continua sem nenhum tipo de coleta seletiva.",
+    "hipotese": "A zona sul continua sem nenhum tipo de coleta seletiva.",
     "nivel": "Fácil",
-    "gabarito": "Neutro"
+    "gabarito": "Contradição"
   },
   {
     "categoria": "Programa de Assistência Básica",
@@ -226,9 +226,9 @@
   {
     "categoria": "Programa de Assistência Básica",
     "premissa": "O Centro de Referência de Assistência Social (CRAS) está oferecendo cursos profissionalizantes gratuitos de informática.",
-    "hipotese": "Os usuários do serviço terão mais oportunidades no mercado de trabalho e também aprenderão a cozinhar.",
+    "hipotese": "Os usuários do serviço terão mais oportunidades no mercado de trabalho.",
     "nivel": "Médio",
-    "gabarito": "Neutro"
+    "gabarito": "Implicação"
   },
   {
     "categoria": "Administração Pública",
@@ -263,7 +263,7 @@
     "premissa": "A fiscalização por radares móveis foi intensificada nas rodovias estaduais de Goiás.",
     "hipotese": "O número de multas por excesso de velocidade nessas rodovias deve diminuir.",
     "nivel": "Médio",
-    "gabarito": "Neutro"
+    "gabarito": "Implicação"
   },
   {
     "categoria": "Meio Ambiente",
@@ -298,7 +298,7 @@
     "premissa": "As forças de segurança realizaram uma operação conjunta de inteligência para desarticular uma organização criminosa.",
     "hipotese": "A operação foi um fracasso total e a organização criminosa se fortaleceu.",
     "nivel": "Difícil",
-    "gabarito": "Neutro"
+    "gabarito": "Contradição"
   },
   {
     "categoria": "Saúde",
@@ -359,9 +359,9 @@
   {
     "categoria": "Trânsito",
     "premissa": "A prefeitura de Goiânia está implementando um sistema de semáforos inteligentes que se ajustam ao fluxo de trânsito em tempo real.",
-    "hipotese": "A prefeitura de São Paulo também implementou o mesmo sistema na semana passada.",
+    "hipotese": "A prefeitura de Goiânia está investindo em melhorias para o trânsito de Goiânia.",
     "nivel": "Difícil",
-    "gabarito": "Neutro"
+    "gabarito": "Implicação"
   },
   {
     "categoria": "Meio Ambiente",
@@ -499,9 +499,9 @@
   {
     "categoria": "Saúde",
     "premissa": "A Anvisa exige testes clínicos em três fases para aprovar um novo medicamento.",
-    "hipotese": "Os testes clínicos foram realizados em um restaurante famoso da cidade.",
+    "hipotese": "Para a anvisa testes clínicos não são importantes para aprovar um novo medicamento .",
     "nivel": "Fácil",
-    "gabarito": "Neutro"
+    "gabarito": "Contradição"
   },
   {
     "categoria": "Trânsito",
@@ -576,9 +576,9 @@
   {
     "categoria": "Administração Pública",
     "premissa": "Um edital de licitação foi publicado para contratar uma empresa de limpeza para as repartições.",
-    "hipotese": "A empresa vencedora da licitação era de jardinagem.",
+    "hipotese": "A empresa vencedora não cuidará da limpeza das repartições",
     "nivel": "Médio",
-    "gabarito": "Neutro"
+    "gabarito": "Contradição"
   },
   {
     "categoria": "Direito Público",
@@ -641,7 +641,7 @@
     "premissa": "A audiência de custódia garante que uma pessoa presa em flagrante seja apresentada a um juiz em até 24 horas.",
     "hipotese": "A audiência de custódia foi adiada por 30 dias.",
     "nivel": "Difícil",
-    "gabarito": "Neutro"
+    "gabarito": "Contradição"
   },
   {
     "categoria": "Saúde",
@@ -697,7 +697,7 @@
     "premissa": "A vigilância sanitária fiscaliza a qualidade de alimentos em restaurantes e supermercados.",
     "hipotese": "A vigilância sanitária inspecionou um restaurante e encontrou produtos vencidos.",
     "nivel": "Fácil",
-    "gabarito": "Neutro"
+    "gabarito": "Implicação"
   },
   {
     "categoria": "Trânsito",
@@ -865,7 +865,7 @@
     "premissa": "A transição do programa Bolsa Família para o Auxílio Brasil gerou debates sobre a gestão do cadastro de beneficiários.",
     "hipotese": "A mudança no programa de transferência de renda foi implementada sem nenhuma discussão pública.",
     "nivel": "Médio",
-    "gabarito": "Neutro"
+    "gabarito": "Contradição"
   },
   {
     "categoria": "Administração Pública",
@@ -1096,7 +1096,7 @@
     "premissa": "A velocidade máxima permitida em uma via urbana não sinalizada é de 40 km/h.",
     "hipotese": "O motorista foi multado por dirigir a 80 km/h em uma rua do bairro sem placas de velocidade.",
     "nivel": "Médio",
-    "gabarito": "Neutro"
+    "gabarito": "Implicação"
   },
   {
     "categoria": "Meio Ambiente",
