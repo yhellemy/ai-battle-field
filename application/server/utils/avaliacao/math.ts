@@ -4,9 +4,9 @@ import { RunnableSequence } from "@langchain/core/runnables";
 import { z } from 'zod';
 import { TesteGenericoInput, TesteGenericoOutput } from "~~/shared/utils/types";
 
-export type TesteDoEmbedContract = AplicacaoTesteContract<TesteGenericoInput, TesteGenericoOutput>
+export type mathContract = AplicacaoTesteContract<TesteGenericoInput, TesteGenericoOutput>
 
-export async function testeDoEmbed(modelProvider: ModelProvider, ctx: TesteGenericoInput): Promise<TesteGenericoOutput>{
+export async function math(modelProvider: ModelProvider, ctx: TesteGenericoInput): Promise<TesteGenericoOutput>{
   const llm = getModel(modelProvider)
 
   const system = `

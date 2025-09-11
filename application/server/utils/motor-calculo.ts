@@ -7,6 +7,7 @@ export const motor = {
   [TipoMetrica.ClarezaResposta]: clarezaRespostaEngine,
   [TipoMetrica.TesteDoEmbed]: testeDoEmbedEngine,
   [TipoMetrica.DireitoAdministrativo]: direitoAdministrativoEngine,
+  [TipoMetrica.Matematica]: mathEngine
 } as const
 
 export async function processarIndicador(metrica: TipoMetrica, output: any, gabarito: any) {

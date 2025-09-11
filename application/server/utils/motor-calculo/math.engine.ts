@@ -9,7 +9,7 @@ function delay(time: number) {
  * Esquema Zod para avaliar a resposta de um modelo de IA
  * com base em um prompt de RAG (Retrieval Augmented Generation).
  */
-export const AvaliacaoRespostaModeloSchema = z.object({
+export const mathSchema = z.object({
   // Detalhes do contexto original e da interação
   perguntaDoUsuario: z.string().describe("A pergunta original feita pelo usuário ao modelo."),
   respostaDoModelo: z.string().describe("A resposta gerada pelo modelo que está sendo avaliada."),
@@ -71,7 +71,7 @@ export const AvaliacaoRespostaModeloSchema = z.object({
   comentariosFinaisAvaliador: z.string().optional().nullable().describe("Comentários adicionais ou observações finais do avaliador."),
 });
 
-export async function testeDoEmbedEngine(output: TesteDoEmbedOutput, gabarito: {}) {
+export async function mathEngine(output: TesteDoEmbedOutput, gabarito: {}) {
   const llm = getModel({provider: process.env.EMBED_TEST_PROVIDER! as "gemini", model: process.env.EMBED_TEST_MODEL!})
   if (!llm) throw new Error('invalid llm')
 
@@ -94,7 +94,7 @@ export async function testeDoEmbedEngine(output: TesteDoEmbedOutput, gabarito: {
   `
 
 
-  const structuredLlm = llm.withStructuredOutput(AvaliacaoRespostaModeloSchema)
+  const structuredLlm = llm.withStructuredOutput(mathSchema)
 
   const prompt = ChatPromptTemplate.fromMessages([
     ['system', system],
