@@ -33,6 +33,20 @@ export type TesteDoEmbedOutput = {
   resposta: string
 }
 
+export type TesteMatematicaQuestion = {
+  pergunta: string
+  nivel: string
+  tipo: string
+}
+
+export type TesteMatematicaOutput = {
+  pergunta: string
+  resposta: string
+}
+export interface TesteMatematicaGabarito {
+  gabarito: string
+}
+
 export interface TesteGenericoInput {
   pergunta: string
 }
@@ -46,6 +60,13 @@ export interface TesteDoEmbedGabarito {}
 
 export interface TesteDoEmbed {
   tipo: "TesteDoEmbed";
+  nome: string;
+  indicador: number;
+  count: number;
+}
+
+export interface Matematica {
+  tipo: string;
   nome: string;
   indicador: number;
   count: number;

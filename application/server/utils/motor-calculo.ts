@@ -1,5 +1,4 @@
 import { TipoMetrica } from '@prisma/client'
-
 export * from './motor-calculo/index'
 
 export const motor = {
@@ -7,6 +6,7 @@ export const motor = {
   [TipoMetrica.ClarezaResposta]: clarezaRespostaEngine,
   [TipoMetrica.TesteDoEmbed]: testeDoEmbedEngine,
   [TipoMetrica.DireitoAdministrativo]: direitoAdministrativoEngine,
+  [TipoMetrica.Matematica]: testeMatematicaEngine,
 } as const
 
 export async function processarIndicador(metrica: TipoMetrica, output: any, gabarito: any) {

@@ -11,13 +11,13 @@ export async function compreensaoTextual(modelProvider: ModelProvider, ctx: Comp
   const system = `**Objetivo:** O objetivo deste prompt é avaliar a capacidade do modelo de Inferência de Linguagem Natural (NLI) em\n
   identificar a relação lógica entre uma Premissa e uma Hipótese, **estritamente com base nas informações contidas na Premissa**, dentro\n
   do contexto do Governo de Goiás.
-
+ 
   **Instruções para o Modelo:**
 
   1.Você receberá uma série de pares de sentenças. Cada par consiste em uma **Premissa** e uma **Hipótese**.
       
   2.Sua tarefa é analisar a relação entre a Hipótese e a Premissa.
-      
+ 
   3.Classifique cada relação em uma das duas categorias exclusivas:
       
 
@@ -41,18 +41,18 @@ export async function compreensaoTextual(modelProvider: ModelProvider, ctx: Comp
     new StringOutputParser(),
   ]);
 
-  const res = await chain.invoke({})
-  const padraoEspecial = '\n</think>\n\n';
+const res = await chain.invoke({});
 
-  let textoAProcessar: string;
+let textoAProcessar: string;
 
-  if (res.includes(padraoEspecial)) {
-    const partes = res.split(padraoEspecial);
-    textoAProcessar = (partes[1] || '').trim();
-  } else {
-    const primeiraParte = res.split(/[.\n,]/)[0];
-    textoAProcessar = primeiraParte.trim();
-  }
+const match = res.match(/<\/think>\s*([\s\S]*)/);
+
+if (match) {
+  textoAProcessar = match[1].trim();
+} else {
+  textoAProcessar = res.trim();
+}
+
 
   return {
     resposta: textoAProcessar

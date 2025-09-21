@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { DadosCompletos } from '~/components/ClarezaChart.client.vue';
+import { TipoMetrica } from '#imports';
 
 definePageMeta({
   colorMode: 'light',
@@ -13,6 +14,7 @@ const { data: compreensaoChartData, refresh: refreshIndicadores } = useAsyncData
 const { data: clarezaChartData, refresh: refreshClareza } = useAsyncData('contar-clareza', () => $fetch<ClarezaRespostaResponse>('/api/contar-clareza'))
 const { data: alucinacaoData, refresh: refreshAlucinacao } = useAsyncData('alucinacao', () => $fetch<ApiResponseAlucinacao>('/api/alucinacao'))
 const { data: embedtestData, refresh: refreshEmbed } = useAsyncData('embedtest', () => $fetch<TesteDoEmbed[]>('/api/embedtest'))
+const { data: matematicaData, refresh: refreshMatematica } = useAsyncData('matematica', () => $fetch<Matematica[]>('/api/matematica'))
 const { data: direitoChartData, refresh: refreshDireito } = useAsyncData('direito-adm', () => $fetch<DireitoAdmResponse[]>('/api/direito-adm'))
 
 onMounted(() => {
@@ -22,8 +24,10 @@ onMounted(() => {
       refreshClareza(),
       refreshAlucinacao(),
       refreshEmbed(),
+      refreshDireito(),
+      refreshMatematica(),
     ])
-  }, 10000);
+  }, 60000);
 });
 
 onBeforeUnmount(() => {
@@ -132,6 +136,21 @@ onBeforeUnmount(() => {
               </div>
             </template>
             <HomeChart v-if="direitoChartData" :data="direitoChartData" />
+          </UCard>
+        </div>
+        <div class="col-span-12 aspect-video ring ring-default rounded-md">
+          <UCard :ui="{ body: '!p-0' }">
+            <template #header>
+              <div class="grid grid-flow-col justify-between items-center">
+                <div class="grid">
+                  <div class="text-lg">
+                    Matemática
+                  </div>
+                  <div class="text-sm text-[var(--ui-text-dimmed)]">LLM como julgador</div>
+                </div>
+              </div>
+            </template>
+            <MatematicaChart v-if="matematicaData" :data="matematicaData" :scatter />
           </UCard>
         </div>
       </div>

@@ -38,19 +38,17 @@ Responda apenas com um número de 1 a 5, sem justificativas.`;
     new StringOutputParser(),
   ]);
 
-  const res: string = await chain.invoke({});
+const res = await chain.invoke({});
 
-  const padraoEspecial = '\n</think>\n\n';
-  let textoAProcessar: string;
+let textoAProcessar: string;
 
-  if (res.includes(padraoEspecial)) {
-   
-    const partes = res.split(padraoEspecial);
-    textoAProcessar = (partes[1] || '').trim();
-  } else {
-    const primeiraParte = res.split(/[.\n,]/)[0];
-    textoAProcessar = primeiraParte.trim();
-  }
+const match = res.match(/<\/think>\s*([\s\S]*)/);
+
+if (match) {
+  textoAProcessar = match[1].trim();
+} else {
+  textoAProcessar = res.trim();
+}
 
   return {
     resposta: textoAProcessar

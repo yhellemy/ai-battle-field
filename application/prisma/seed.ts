@@ -4,6 +4,7 @@ import comprTextualJson from './compreensao-textual.json'
 import clarezaResJson from './clareza-resposta.json'
 import { cartas, perguntas } from './cartas-servico.json'
 import direito from './direito-administrativo.json'
+import matematica from './matematica.json'
 //import { servicos } from './cartas.json'
 
 const prisma = new PrismaClient()
@@ -20,7 +21,7 @@ async function main() {
         
       }
       await index.upsert(element)
-    }*/
+    }
   //}
 
   await prisma.provedores.create({
@@ -56,8 +57,15 @@ async function main() {
       tipo: TipoMetrica.DireitoAdministrativo,
     }
   })
+*/
+    const mt = await prisma.metricas.create({
+    data: {
+      metricas: 'Matematica',
+      tipo: TipoMetrica.Matematica,
+    }
+  })
 
-  await prisma.bancoDeQuestoes.createMany({
+  /*await prisma.bancoDeQuestoes.createMany({
     data: [
       {
         metricaId: tx.id,
@@ -84,7 +92,7 @@ async function main() {
         } satisfies ComprTextualQuestion,
         gabarito: { resposta: item.gabarito },
       }
-    })//.filter((item, index) => 10 > index)
+    }).filter((item, index) => 10 > index)
   })
 
   await prisma.bancoDeQuestoes.createMany({
@@ -97,7 +105,7 @@ async function main() {
         } satisfies ClarezaRespostaQuestao,
         gabarito: { resposta: item.gabarito } satisfies ClarezaRespostaGabarito,
       }
-    })//.filter((item, index) => 10 > index)
+    }).filter((item, index) => 10 > index)
   })
 
   await prisma.bancoDeQuestoes.createMany({
@@ -109,7 +117,7 @@ async function main() {
         } satisfies TesteDoEmbedQuestion,
         gabarito: {} satisfies TesteDoEmbedGabarito,
       }
-    })//.filter((item, index) => 30 > index)
+    }).filter((item, index) => 10 > index)
   })
 
   await prisma.bancoDeQuestoes.createMany({
@@ -126,7 +134,24 @@ async function main() {
         } satisfies DireitoAdmGabarito,
       }
     })
+  })*/
+
+    await prisma.bancoDeQuestoes.createMany({
+    data: matematica.map((item) => {
+      return {
+        metricaId: mt.id,
+        pergunta: {
+          pergunta: item.problem,
+          nivel: item.level,
+          tipo: item.type
+        } satisfies TesteMatematicaQuestion,
+        gabarito: {
+          gabarito: item.solution 
+        } satisfies TesteMatematicaGabarito,
+      }
+    }).filter((item, index) => 10 > index)
   })
+
   if (false && process.env.UPSTASH_VECTOR_REST_URL && process.env.UPSTASH_VECTOR_REST_TOKEN) {
     const index = new Index({
       url: process.env.UPSTASH_VECTOR_REST_URL,

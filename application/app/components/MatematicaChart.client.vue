@@ -72,21 +72,17 @@ const commonAxisStyles = {
 };
 
 const VALORES = {
-  0: 'Alucinação',
-  1: 'Péssimo',
-  2: 'Ruim',
-  3: 'Regular',
-  4: 'Bom',
-  5: 'Excelente'
+  0: 'Erros',
+  1: 'Acertos',
+  2: 'Não Soube Responder',
+  3: 'Alucinação',
 } as const
 
 const CORES = {
-  0: '#004C97',
-  1: '#f7931e',
-  2: '#fbb03b',
-  3: '#FEDD00',
-  4: '#00766f',
-  5: '#00c951'
+  0: '#f7931e',
+  1: '#00c951',
+  2: '#B03BFB',
+  3: '#004C97', 
 } as const;
 
 // Opção computada do ECharts que reage a mudanças nos props.

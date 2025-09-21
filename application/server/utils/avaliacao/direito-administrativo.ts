@@ -8,7 +8,14 @@ export type direitoAdministrativoContract = AplicacaoTesteContract<DireitoAdmQue
 export async function direitoAdministrativo(modelProvider: ModelProvider, ctx: DireitoAdmQuestion): Promise<DireitoAdmOutput>{
   const llm = getModel(modelProvider)
 
-  const system = `Receba uma frase sobre direito administrativo e responda apenas "True" ou "False", sem explicações adicionais.` 
+  const system = `Você é um especialista em Direito Administrativo, com conhecimento profundo da doutrina, jurisprudência e legislação brasileira.
+  Você receberá uma única frase relacionada ao Direito Administrativo. Sua função é determinar se a frase está juridicamente correta ou incorreta com base no que é aceito pela doutrina majoritária, pela jurisprudência consolidada e pela legislação vigente no Brasil.
+  Instruções de Resposta:
+  1. Responda exclusivamente com uma única palavra: "True" se a frase estiver correta ou "False" se a frase estiver incorreta.
+  2. Nunca adicione explicações, justificativas, exemplos ou qualquer outra informação além de "True" ou "False".
+  3. Se a frase for ambígua ou não relacionada ao Direito Administrativo, responda "False".
+  4. Mantenha consistência, precisão e objetividade em todas as respostas.
+  Importante: Seu objetivo é ser extremamente confiável e preciso, mesmo para casos complexos, respeitando sempre o ordenamento jurídico brasileiro.` 
   const promptTemplate = ChatPromptTemplate.fromMessages([
     ["system", system],
     ["human", "Frase: {pergunta}"]
@@ -24,23 +31,17 @@ export async function direitoAdministrativo(modelProvider: ModelProvider, ctx: D
     new StringOutputParser(),
   ]);
 
-  const res = await chain.invoke({})
-  console.log(res, ctx)
-  // O padrão especial que você quer identificar
-  const padraoEspecial = '\n</think>\n\n';
+const res = await chain.invoke({});
 
-  let textoAProcessar: string;
+let textoAProcessar: string;
 
-  // Verifica se a resposta do output contém o padrão especial
-  if (res.includes(padraoEspecial)) {
-    // CASO 1: O padrão foi encontrado → pegamos o texto após o padrão
-    const partes = res.split(padraoEspecial);
-    textoAProcessar = (partes[1] || '').trim();
-  } else {
-    // CASO 2: O padrão NÃO foi encontrado → pegamos só a primeira parte
-    const primeiraParte = res.split(/[.\n,]/)[0];
-    textoAProcessar = primeiraParte.trim();
-  }
+const match = res.match(/<\/think>\s*([\s\S]*)/);
+
+if (match) {
+  textoAProcessar = match[1].trim();
+} else {
+  textoAProcessar = res.trim();
+}
 
   return {
     resposta: textoAProcessar
