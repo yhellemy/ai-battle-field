@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { TipoMetrica } from "@prisma/client";
 import type { DadosCompletos } from '~/components/ClarezaChart.client.vue';
 import { TipoMetrica } from '#imports';
 
