@@ -13,7 +13,7 @@ export const AvaliacaoRespostaModeloSchema = z.object({
  pontuacaoGeral: z.number().min(0).max(3).describe("Pontuação geral da resposta, onde 0 o modelo (Errou), 1 (Acertou), 2 (Não soube responder) e 3 (Alucinou)."),
 });
 
-export async function testeMatematicaEngine(output: TesteMatematicaOutput, gabarito: TesteMatematicaGabarito) {
+export async function testeRaciocinioEngine(output: TesteRaciocinioOutput, gabarito: TesteRaciocinioGabarito) {
   const llm = getModel({provider: process.env.EMBED_TEST_PROVIDER! as "gemini", model: process.env.EMBED_TEST_MODEL!})
   if (!llm) throw new Error('invalid llm')
     
@@ -22,15 +22,15 @@ export async function testeMatematicaEngine(output: TesteMatematicaOutput, gabar
 
 
   const human = `
-You are a math expert, and your task is to evaluate the quality of the response provided by another AI model for a mathematical problem. The correct answer key for comparison is provided in the **gabarito** field.
+Você é um especialista em raciocínio lógico e sua tarefa é avaliar a qualidade da resposta fornecida por outro modelo de IA para um problema lógico. A resposta correta para comparação é fornecida no campo gabarito.
 
-Analyze the LLM's response based on the following criteria:
+Analise a resposta do LLM com base nos seguintes critérios:
 
-Final Answer Correctness: Is the answer in the ANSWER: line mathematically correct? Compare it with the value in the gabarito field.
+Correção da Resposta Final: A resposta na linha RESPOSTA: está logicamente correta? Compare-a com o valor no campo gabarito.
 
-Step-by-Step Correction: Are the reasoning and intermediate calculations correct, and do they logically lead to the final answer?
+Correção do Passo a Passo: A linha de raciocínio está correta e levam logicamente à resposta final?
 
-Format Compliance: Does the response strictly follow the requested formatting rules (a step-by-step explanation and the ANSWER: $ANSWER line as the very last line)?
+Conformidade com o Formato: A resposta segue estritamente as regras de formatação solicitadas (uma explicação passo a passo e a linha RESPOSTA: $RESPOSTA como a última linha)?
 
   **[QUESTION]**
   {pergunta}
@@ -58,7 +58,7 @@ Format Compliance: Does the response strictly follow the requested formatting ru
 
   //await delay(6000)
 
-  //console.log(output.resposta, ' hhhhhhhhhhhhhh ', gabarito.gabarito)
+  console.log(output.resposta, ' hhhhhhhhhhhhhh ', gabarito.gabarito)
 
   return res.pontuacaoGeral
 }

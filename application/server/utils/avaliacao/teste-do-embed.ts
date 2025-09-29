@@ -74,7 +74,7 @@ export async function testeDoEmbed(modelProvider: ModelProvider, ctx: TesteDoEmb
   ]);
 
   const res = await chain.invoke({})
-console.log("Resposta final:", res);
+//console.log("Resposta final:", res);
   return {
     resposta: res,
     pergunta: ctx.pergunta

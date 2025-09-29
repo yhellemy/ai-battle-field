@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { TipoMetrica } from "@prisma/client";
 import type { DadosCompletos } from '~/components/ClarezaChart.client.vue';
 import { TipoMetrica } from '#imports';
 
@@ -16,7 +15,9 @@ const { data: clarezaChartData, refresh: refreshClareza } = useAsyncData('contar
 const { data: alucinacaoData, refresh: refreshAlucinacao } = useAsyncData('alucinacao', () => $fetch<ApiResponseAlucinacao>('/api/alucinacao'))
 const { data: embedtestData, refresh: refreshEmbed } = useAsyncData('embedtest', () => $fetch<TesteDoEmbed[]>('/api/embedtest'))
 const { data: matematicaData, refresh: refreshMatematica } = useAsyncData('matematica', () => $fetch<Matematica[]>('/api/matematica'))
-const { data: direitoChartData, refresh: refreshDireito } = useAsyncData('direito-adm', () => $fetch<DireitoAdmResponse[]>('/api/direito-adm'))
+const { data: direitoChartData, refresh: refreshDireito } = useAsyncData('direito-adm', () => $fetch<DireitoAdministrativo[]>('/api/direito-adm'))
+const { data: raciocinioLogicoData, refresh: refreshRaciocinioLogico } = useAsyncData('raciociniologico', () => $fetch<RaciocinioLogico[]>('/api/raciociniologico'))
+
 
 onMounted(() => {
   intervalId = setInterval(async () => {
@@ -27,6 +28,7 @@ onMounted(() => {
       refreshEmbed(),
       refreshDireito(),
       refreshMatematica(),
+      refreshRaciocinioLogico(),
     ])
   }, 60000);
 });
@@ -126,17 +128,19 @@ onBeforeUnmount(() => {
             <EmbedChart v-if="embedtestData" :data="embedtestData" :scatter />
           </UCard>
         </div>
-        <div class="col-span-12">
+        <div class="col-span-12 aspect-video ring ring-default rounded-md">
           <UCard :ui="{ body: '!p-0' }">
             <template #header>
-              <div class="text-lg">
-                Direito Administrativo
-              </div>
-              <div class="text-sm text-[var(--ui-text-dimmed)]">
-                Avaliação de Veracidade BoolQ
+              <div class="grid grid-flow-col justify-between items-center">
+                <div class="grid">
+                  <div class="text-lg">
+                    Direito Administrativo
+                  </div>
+                  <div class="text-sm text-[var(--ui-text-dimmed)]">LLM como julgador</div>
+                </div>
               </div>
             </template>
-            <HomeChart v-if="direitoChartData" :data="direitoChartData" />
+            <MatematicaChart v-if="direitoChartData" :data="direitoChartData" />
           </UCard>
         </div>
         <div class="col-span-12 aspect-video ring ring-default rounded-md">
@@ -152,6 +156,21 @@ onBeforeUnmount(() => {
               </div>
             </template>
             <MatematicaChart v-if="matematicaData" :data="matematicaData" :scatter />
+          </UCard>
+        </div>
+        <div class="col-span-12 aspect-video ring ring-default rounded-md">
+          <UCard :ui="{ body: '!p-0' }">
+            <template #header>
+              <div class="grid grid-flow-col justify-between items-center">
+                <div class="grid">
+                  <div class="text-lg">
+                    Raciocínio Lógico
+                  </div>
+                  <div class="text-sm text-[var(--ui-text-dimmed)]">LLM como julgador</div>
+                </div>
+              </div>
+            </template>
+            <MatematicaChart v-if="raciocinioLogicoData" :data="raciocinioLogicoData" :scatter />
           </UCard>
         </div>
       </div>

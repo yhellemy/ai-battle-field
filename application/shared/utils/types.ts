@@ -47,6 +47,19 @@ export interface TesteMatematicaGabarito {
   gabarito: string
 }
 
+export type TesteRaciocinioQuestion = {
+  pergunta: string
+  nivel: string
+}
+
+export type TesteRaciocinioOutput = {
+  pergunta: string
+  resposta: string
+}
+export interface TesteRaciocinioGabarito {
+  gabarito: string
+}
+
 export interface TesteGenericoInput {
   pergunta: string
 }
@@ -72,6 +85,19 @@ export interface Matematica {
   count: number;
 }
 
+export interface DireitoAdministrativo {
+  tipo: string;
+  nome: string;
+  indicador: number;
+  count: number;
+}
+
+export interface RaciocinioLogico {
+  tipo: string;
+  nome: string;
+  indicador: number;
+  count: number;
+}
 // compreensao textual
 
 interface Metrica {
@@ -162,7 +188,9 @@ export interface ApiResponseAlucinacao {
 }
 
 export type DireitoAdmOutput = {
-  resposta: string
+  pergunta: string,
+  resposta: string,
+  justificativa_resposta: string,
 }
 
 export type DireitoAdmQuestion = {

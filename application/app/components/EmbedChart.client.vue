@@ -72,6 +72,7 @@ const commonAxisStyles = {
 };
 
 const VALORES = {
+  6: 'Não Soube Responder',
   0: 'Alucinação',
   1: 'Péssimo',
   2: 'Ruim',
@@ -81,6 +82,7 @@ const VALORES = {
 } as const
 
 const CORES = {
+  6: '#B03BFB',
   0: '#004C97',
   1: '#f7931e',
   2: '#fbb03b',

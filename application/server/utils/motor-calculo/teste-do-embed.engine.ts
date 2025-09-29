@@ -66,7 +66,7 @@ export const AvaliacaoRespostaModeloSchema = z.object({
    * Pontuação Geral (Opcional):
    * Qualidade geral da resposta em uma escala de 1 a 5, onde 1 é "Muito Ruim" e 5 é "Excelente". Se o modelo alucinou, Zero (0). [7]
    */
-  pontuacaoGeral: z.number().min(0).max(5).describe("Pontuação geral da resposta, de 1 (Muito Ruim) a 5 (Excelente). Se o modelo alucinou, Zero (0)."),
+  pontuacaoGeral: z.number().min(0).max(6).describe("Pontuação geral da resposta, de 1 (Muito Ruim) a 5 (Excelente). Se o modelo alucinou, Zero (0). Se o modelo assumiu que não sabe ou não encontrou a resposta para pergunta, a nota deverá ser (6)."),
 
   /**
    * Comentários Finais do Avaliador:
@@ -128,6 +128,7 @@ export async function testeDoEmbedEngine(output: TesteDoEmbedOutput, gabarito: T
 
   //await delay(6000)
 
+  //console.log(output.pergunta, ' hhhhhhhhhhhhhh ', output.resposta)
 
   return res.pontuacaoGeral
 }

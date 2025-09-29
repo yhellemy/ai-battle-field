@@ -17,6 +17,7 @@ enum TipoMetrica {
   TesteDoEmbed
   DireitoAdministrativo
   Matematica
+  RaciocinioLogico
 }
 
 model BancoDeQuestoes {

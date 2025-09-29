@@ -5,6 +5,7 @@ import clarezaResJson from './clareza-resposta.json'
 import { cartas, perguntas } from './cartas-servico.json'
 import direito from './direito-administrativo.json'
 import matematica from './matematica.json'
+import raciociniologico from './raciocinio-logico.json'
 //import { servicos } from './cartas.json'
 
 const prisma = new PrismaClient()
@@ -57,13 +58,21 @@ async function main() {
       tipo: TipoMetrica.DireitoAdministrativo,
     }
   })
-*/
+
     const mt = await prisma.metricas.create({
     data: {
       metricas: 'Matematica',
       tipo: TipoMetrica.Matematica,
     }
+  })*/
+
+   const rl = await prisma.metricas.create({
+    data: {
+      metricas: 'Raciocinio Logico',
+      tipo: TipoMetrica.RaciocinioLogico,
+    }
   })
+ 
 
   /*await prisma.bancoDeQuestoes.createMany({
     data: [
@@ -134,7 +143,7 @@ async function main() {
         } satisfies DireitoAdmGabarito,
       }
     })
-  })*/
+  })
 
     await prisma.bancoDeQuestoes.createMany({
     data: matematica.map((item) => {
@@ -148,6 +157,21 @@ async function main() {
         gabarito: {
           gabarito: item.solution 
         } satisfies TesteMatematicaGabarito,
+      }
+    }).filter((item, index) => 10 > index)
+  })*/
+
+    await prisma.bancoDeQuestoes.createMany({
+    data: raciociniologico.map((item) => {
+      return {
+        metricaId: rl.id,
+        pergunta: {
+          pergunta: item.pergunta,
+          nivel: item.level
+        } satisfies TesteRaciocinioQuestion,
+        gabarito: {
+          gabarito: item.Gabarito 
+        } satisfies TesteRaciocinioGabarito,
       }
     }).filter((item, index) => 10 > index)
   })

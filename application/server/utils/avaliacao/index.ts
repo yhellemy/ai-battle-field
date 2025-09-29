@@ -1,3 +1,4 @@
 export * from './compreensao-textual'
 export * from './clareza-resposta'
 export * from './matematica'
+export * from './raciocinio-logico'

@@ -29,7 +29,7 @@ Remember to put your answer on its own line at the end in the form “ANSWER: $A
   ]);
 
   const res = await chain.invoke({})
-console.log("Resposta final:", res);
+//console.log("Resposta final:", res);
   return {
     resposta: res,
     pergunta: ctx.pergunta
