@@ -7,11 +7,13 @@ definePageMeta({
 })
 
 interface cols  {
-  "modelo_id": number,
   "nome_modelo": string,
+  "compreensaotextualmetrica": number,
+  "qualidaderesposta": number,
+  "clarezarespostametrica": number,
   "direitometrica": number,
   "matematica": number,
-  "media_geral": string
+  "raciociniometrica": number
 }
 
 const toast = useToast()
@@ -56,12 +58,8 @@ const sorting = ref([
 
 const columns: TableColumn<cols>[] = [
   {
-    accessorKey: 'modelo_id',
-    header: '#',
-    cell: ({ row }) => `#${row.getValue('modelo_id')}`
-  },
-  {
     accessorKey: 'nome_modelo',
+
     header: ({ column }) => {
       const isSorted = column.getIsSorted()
 
@@ -74,6 +72,69 @@ const columns: TableColumn<cols>[] = [
           ? isSorted === 'asc'
             ? 'mdi:sort-alphabetical-descending'
             : 'mdi:sort-alphabetical-ascending'
+          : 'i-lucide-arrow-up-down',
+        class: '-mx-2.5',
+        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
+      })
+    }
+  },
+  {
+    accessorKey: 'compreensaotextualmetrica',
+
+    header: ({ column }) => {
+      const isSorted = column.getIsSorted()
+
+      return h(UButton, {
+        color: 'neutral',
+        variant: 'ghost',
+        size: 'sm',
+        label: 'Compreensão Textual',
+        icon: isSorted
+          ? isSorted === 'asc'
+            ? 'mdi:chevron-down'
+            : 'mdi:chevron-up'
+          : 'i-lucide-arrow-up-down',
+        class: '-mx-2.5',
+        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
+      })
+    }
+  },
+  {
+    accessorKey: 'qualidaderesposta',
+
+    header: ({ column }) => {
+      const isSorted = column.getIsSorted()
+
+      return h(UButton, {
+        color: 'neutral',
+        variant: 'ghost',
+        size: 'sm',
+        label: 'Qualidade da Resposta',
+        icon: isSorted
+          ? isSorted === 'asc'
+            ? 'mdi:chevron-down'
+            : 'mdi:chevron-up'
+          : 'i-lucide-arrow-up-down',
+        class: '-mx-2.5',
+        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
+      })
+    }
+  },
+  {
+    accessorKey: 'clarezarespostametrica',
+
+    header: ({ column }) => {
+      const isSorted = column.getIsSorted()
+
+      return h(UButton, {
+        color: 'neutral',
+        variant: 'ghost',
+        size: 'sm',
+        label: 'Clareza da Resposta',
+        icon: isSorted
+          ? isSorted === 'asc'
+            ? 'mdi:chevron-down'
+            : 'mdi:chevron-up'
           : 'i-lucide-arrow-up-down',
         class: '-mx-2.5',
         onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
@@ -104,6 +165,27 @@ const columns: TableColumn<cols>[] = [
   {
     accessorKey: 'matematica',
 
+        header: ({ column }) => {
+      const isSorted = column.getIsSorted()
+
+      return h(UButton, {
+        color: 'neutral',
+        variant: 'ghost',
+        size: 'sm',
+        label: 'Raciocínio lógico',
+        icon: isSorted
+          ? isSorted === 'asc'
+            ? 'mdi:chevron-down'
+            : 'mdi:chevron-up'
+          : 'i-lucide-arrow-up-down',
+        class: '-mx-2.5',
+        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
+      })
+    }
+  },
+  {
+    accessorKey: 'raciociniometrica',
+
     header: ({ column }) => {
       const isSorted = column.getIsSorted()
 
@@ -121,10 +203,7 @@ const columns: TableColumn<cols>[] = [
         onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
       })
     }
-  },
-  {
-    accessorKey: 'media_geral',
-  },
+  }
 ]
 </script>
 
