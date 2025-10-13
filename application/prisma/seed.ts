@@ -29,7 +29,7 @@ async function main() {
     data: {
       nome: Provider.ollama,
     }
-  })
+  })*/
 
   const tx = await prisma.metricas.create({
     data: {
@@ -64,7 +64,7 @@ async function main() {
       metricas: 'Matematica',
       tipo: TipoMetrica.Matematica,
     }
-  })*/
+  })
 
    const rl = await prisma.metricas.create({
     data: {
@@ -74,7 +74,7 @@ async function main() {
   })
  
 
-  /*await prisma.bancoDeQuestoes.createMany({
+await prisma.bancoDeQuestoes.createMany({
     data: [
       {
         metricaId: tx.id,
@@ -101,7 +101,7 @@ async function main() {
         } satisfies ComprTextualQuestion,
         gabarito: { resposta: item.gabarito },
       }
-    }).filter((item, index) => 10 > index)
+    })//.filter((item, index) => 10 > index)
   })
 
   await prisma.bancoDeQuestoes.createMany({
@@ -114,7 +114,7 @@ async function main() {
         } satisfies ClarezaRespostaQuestao,
         gabarito: { resposta: item.gabarito } satisfies ClarezaRespostaGabarito,
       }
-    }).filter((item, index) => 10 > index)
+    })//.filter((item, index) => 10 > index)
   })
 
   await prisma.bancoDeQuestoes.createMany({
@@ -126,7 +126,7 @@ async function main() {
         } satisfies TesteDoEmbedQuestion,
         gabarito: {} satisfies TesteDoEmbedGabarito,
       }
-    }).filter((item, index) => 10 > index)
+    })//.filter((item, index) => 10 > index)
   })
 
   await prisma.bancoDeQuestoes.createMany({
@@ -158,8 +158,8 @@ async function main() {
           gabarito: item.solution 
         } satisfies TesteMatematicaGabarito,
       }
-    }).filter((item, index) => 10 > index)
-  })*/
+    })//.filter((item, index) => 10 > index)
+  })
 
     await prisma.bancoDeQuestoes.createMany({
     data: raciociniologico.map((item) => {
@@ -173,7 +173,7 @@ async function main() {
           gabarito: item.Gabarito 
         } satisfies TesteRaciocinioGabarito,
       }
-    }).filter((item, index) => 10 > index)
+    })//.filter((item, index) => 10 > index)
   })
 
   if (false && process.env.UPSTASH_VECTOR_REST_URL && process.env.UPSTASH_VECTOR_REST_TOKEN) {
