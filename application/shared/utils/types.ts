@@ -31,6 +31,7 @@ export type TesteDoEmbedQuestion = {
 export type TesteDoEmbedOutput = {
   pergunta: string
   resposta: string
+  rag: string
 }
 
 export type TesteMatematicaQuestion = {
@@ -165,11 +166,10 @@ export interface ApiResponseDesempenho {
 export interface ErroDetalhado {
   metricaId: number;
   modeloId: number;
-  tipo: string;
   modelo: string;
-  erros: number;
-  total_geral_erros: number;
-  porcentagem_erro: number;
+  tipo: string;
+  porcentagem_erros: number;
+  porcentagem_alucinacao: number;
 }
 
 export interface AlucinacaoDetalhada {

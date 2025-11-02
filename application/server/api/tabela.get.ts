@@ -15,7 +15,7 @@ GROUP BY 1,2,3),
 alucinacao_compreensao as (SELECT 
 bdq."metricaId",
 res."modeloId",
-COUNT(*)*-100 AS totalucinacao
+COUNT(*)*-1 AS totalucinacao
 FROM "Resultados" AS res
 INNER JOIN "BancoDeQuestoes" AS bdq 
 INNER JOIN "Metricas" as mt on bdq."metricaId" = mt.id ON res."bancoDeQuestoesId" = bdq.id
@@ -28,7 +28,7 @@ SELECT
 ind."metricaId",
 mls.id AS modelo_id,
 mls.nome AS nome_modelo,
-COUNT(*)*100 acertos
+COUNT(*)*1 acertos
 FROM "Indicadores" AS ind
 INNER JOIN  "Modelos" AS mls ON ind."modeloId" = mls.id
 WHERE ind."metricaId" = 1 and ind.indicador =100
@@ -37,13 +37,14 @@ GROUP BY 1,2,3),
 compreesao_textual as (
 SELECT
 tc.modelo_id,
+tc.nome_modelo,
 CASE WHEN SUM(COALESCE(tc.total_pergunta, 0)) = 0 THEN 0.0
 ELSE ROUND(CAST(SUM(COALESCE(ac.acertos, 0) + COALESCE(al.totalucinacao, 0)) AS NUMERIC) / NULLIF(SUM(COALESCE(tc.total_pergunta, 0)), 0),2)
 END AS compreensaotextualmetrica
 FROM total_compreesao tc
 FULL JOIN alucinacao_compreensao al ON tc.modelo_id = al."modeloId"
 FULL JOIN acertos_compreesao ac ON tc.modelo_id = ac.modelo_id
-GROUP BY 1),
+GROUP BY 1,2),
 
 total_clareza as (SELECT
 ind."metricaId",
@@ -58,7 +59,7 @@ GROUP BY 1,2,3),
 alucinacao_clareza as (SELECT 
 bdq."metricaId",
 res."modeloId",
-COUNT(*)*-100 AS totalucinacao
+COUNT(*)*-1 AS totalucinacao
 FROM "Resultados" AS res
 INNER JOIN "BancoDeQuestoes" AS bdq 
 INNER JOIN "Metricas" as mt on bdq."metricaId" = mt.id ON res."bancoDeQuestoesId" = bdq.id
@@ -71,7 +72,7 @@ SELECT
 ind."metricaId",
 mls.id AS modelo_id,
 mls.nome AS nome_modelo,
-COUNT(*)*100 acertos
+COUNT(*)*1 acertos
 FROM "Indicadores" AS ind
 INNER JOIN  "Modelos" AS mls ON ind."modeloId" = mls.id
 WHERE ind."metricaId" = 2 and ind.indicador =100
@@ -80,13 +81,14 @@ GROUP BY 1,2,3),
 clareza_resposta as (
 SELECT
 tc.modelo_id,
+tc.nome_modelo,
 CASE WHEN SUM(COALESCE(tc.total_pergunta, 0)) = 0 THEN 0.0
 ELSE ROUND(CAST(SUM(COALESCE(ac.acertos, 0) + COALESCE(al.totalucinacao, 0)) AS NUMERIC) / NULLIF(SUM(COALESCE(tc.total_pergunta, 0)), 0),2)
 END AS clarezarespostametrica
 FROM total_clareza tc
 FULL JOIN alucinacao_clareza al ON tc.modelo_id = al."modeloId"
 FULL JOIN acertos_clareza ac ON tc.modelo_id = ac.modelo_id
-GROUP BY 1),
+GROUP BY 1,2),
 
 qualidade_resposta as (
 SELECT
@@ -184,20 +186,20 @@ WHERE met.tipo in ('RaciocinioLogico')
 GROUP BY 1,2),
 
 consolidado AS (
-  SELECT
-    d.nome_modelo,
+SELECT
+    coalesce(d.nome_modelo, m.nome_modelo, r.nome_modelo, ct.nome_modelo, cr.nome_modelo, qr.nome_modelo) AS nome_modelo,
     d.direitometrica :: float,
     m.matematica :: float,
-	r.raciociniometrica :: float,
+    r.raciociniometrica :: float,
     ct.compreensaotextualmetrica :: float,
-	cr.clarezarespostametrica :: float,
-	qr.qualidaderesposta :: float
-  FROM direito d
-  FULL JOIN matematica m ON d.modelo_id = m.modelo_id
-  FULL JOIN raciocinio r ON d.modelo_id = r.modelo_id
-  FULL JOIN compreesao_textual ct ON d.modelo_id = ct.modelo_id
-  FULL JOIN clareza_resposta cr ON d.modelo_id = cr.modelo_id
-  FULL JOIN qualidade_resposta qr ON d.modelo_id = qr.modelo_id
+    cr.clarezarespostametrica :: float,
+    qr.qualidaderesposta :: float
+FROM direito d
+FULL JOIN matematica m ON d.modelo_id = m.modelo_id
+FULL JOIN raciocinio r ON r.modelo_id = coalesce(d.modelo_id, m.modelo_id)
+FULL JOIN compreesao_textual ct ON ct.modelo_id = coalesce(d.modelo_id, m.modelo_id, r.modelo_id)
+FULL JOIN clareza_resposta cr ON cr.modelo_id = coalesce(d.modelo_id, m.modelo_id, r.modelo_id, ct.modelo_id)
+FULL JOIN qualidade_resposta qr ON qr.modelo_id = coalesce(d.modelo_id, m.modelo_id, r.modelo_id, ct.modelo_id, cr.modelo_id)
 )
 SELECT *
 FROM consolidado;;`;

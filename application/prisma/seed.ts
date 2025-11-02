@@ -23,13 +23,13 @@ async function main() {
       }
       await index.upsert(element)
     }
-  //}
+  //}*/
 
   await prisma.provedores.create({
     data: {
       nome: Provider.ollama,
     }
-  })*/
+  })
 
   const tx = await prisma.metricas.create({
     data: {

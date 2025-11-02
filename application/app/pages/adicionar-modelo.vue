@@ -50,10 +50,7 @@ watch(providers, (currentProviderList) => {
 }, { immediate: true, once: true })
 
 const sorting = ref([
-  {
-    id: 'media_geral',
-    desc: false
-  }
+
 ])
 
 const columns: TableColumn<cols>[] = [
@@ -172,7 +169,7 @@ const columns: TableColumn<cols>[] = [
         color: 'neutral',
         variant: 'ghost',
         size: 'sm',
-        label: 'Raciocínio lógico',
+        label: 'Matematica',
         icon: isSorted
           ? isSorted === 'asc'
             ? 'mdi:chevron-down'
@@ -193,7 +190,7 @@ const columns: TableColumn<cols>[] = [
         color: 'neutral',
         variant: 'ghost',
         size: 'sm',
-        label: 'Matematica',
+        label: 'Raciocínio lógico',
         icon: isSorted
           ? isSorted === 'asc'
             ? 'mdi:chevron-down'

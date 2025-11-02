@@ -38,9 +38,9 @@ export async function testeDoEmbed(modelProvider: ModelProvider, ctx: TesteDoEmb
 - Exemplo: “De acordo com [fonte-2], ...”.
  
 4. Se Não Houver Resposta no Contexto
-- Diga de forma explícita:
-"Com base nas informações fornecidas, não foi possível encontrar uma resposta para esta pergunta."
-- Nunca invente, complete lacunas ou faça inferências sem suporte direto no contexto.
+- Admita isso abertamente:
+- Você tem a liberdade para formular essa negativa de forma natural, deixando claro que a informação não estava nos documentos fornecidos.
+- A regra mais importante é: Nunca invente, complete lacunas ou faça inferências sem suporte direto no contexto.
  
 5. Mantenha a Resposta Consistente
 - Evite contradições.
@@ -77,6 +77,7 @@ export async function testeDoEmbed(modelProvider: ModelProvider, ctx: TesteDoEmb
 //console.log("Resposta final:", res);
   return {
     resposta: res,
-    pergunta: ctx.pergunta
+    pergunta: ctx.pergunta,
+    rag
   }
 }

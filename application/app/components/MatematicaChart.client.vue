@@ -115,6 +115,8 @@ const option = computed(() => {
       axisPointer: {
         type: 'shadow', 
       },
+       valueFormatter: (indicador: number) => indicador + '%'
+
     },
     legend: {
     data: indicadores.map(i => `${VALORES[i]}`),
@@ -139,7 +141,7 @@ const option = computed(() => {
     }, commonAxisStyles),
     yAxis: defu({
       type: 'value',
-      name: 'Count',
+      name: '(%)',
     }, commonAxisStyles),
     dataZoom: [
   {

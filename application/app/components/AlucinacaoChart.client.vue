@@ -1,6 +1,12 @@
 <template>
   <div ref="chart" class="grid">
-    <v-chart v-if="data" class="chart" :style="{ width: width+'px', height: height+'px' }" :option="option" autoresize />
+    <v-chart
+      v-if="data"
+      class="chart"
+      :style="{ width: width + 'px', height: height + 'px' }"
+      :option="option"
+      autoresize
+    />
   </div>
 </template>
 
@@ -8,107 +14,107 @@
 import { useElementSize } from '@vueuse/core';
 import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
-import { PieChart } from 'echarts/charts';
+import { BarChart } from 'echarts/charts';
 import {
   TitleComponent,
   TooltipComponent,
   LegendComponent,
-  GridComponent, // Adicionado para melhor controle de layout
+  GridComponent,
 } from 'echarts/components';
 import VChart from 'vue-echarts';
 
-
+// Registrar módulos necessários do ECharts
 use([
   CanvasRenderer,
-  PieChart,
+  BarChart,
   TitleComponent,
   TooltipComponent,
   LegendComponent,
   GridComponent,
 ]);
 
-const root = document.documentElement;
 const el = useTemplateRef('chart');
 const { width, height } = useElementSize(el);
 
 const props = defineProps<{
   data: ApiResponseAlucinacao | null;
-  metrica: string; 
+  metrica: string;
 }>();
 
 
 const chartData = computed(() => {
-  if (!props.data) return [];
-  
-  const seriesData: any[] = [];
-  
-  const modelosDaMetrica = props.data.totalErro.filter(e => e.tipo === props.metrica);
+  if (!props.data) return { modelos: [], erros: [], alucinacoes: [] };
 
-  modelosDaMetrica.forEach((erroInfo, index) => {
-    const alucinacaoInfo = props.data!.totalAlucinacao.find(
-      a => a.modeloId === erroInfo.modeloId && a.tipo === props.metrica
+  const modelosDaMetrica = props.data.totalErro.filter(
+    (e) => e.tipo === props.metrica
+  );
+
+  const modelos: string[] = [];
+  const erros: number[] = [];
+  const alucinacoes: number[] = [];
+
+  modelosDaMetrica.forEach((erroInfo) => {
+    const alucinacaoInfo = props.data!.totalErro.find(
+      (a) => a.modeloId === erroInfo.modeloId && a.tipo === props.metrica
     );
 
-    const valorErro = erroInfo.porcentagem_erro;
-    const valorAlucinacao = alucinacaoInfo ? alucinacaoInfo.porcentagem_erro : 0;
-    const corBase = getColorByIndex(index);
-
-    seriesData.push({
-      value: valorErro,
-      name: `${erroInfo.modelo}: Erro`, 
-      itemStyle: { 
-        color: corBase,
-        opacity: 1, 
-        borderWidth: 1,
-        borderColor: '#fff'
-      },
-    });
-    
-    seriesData.push({
-      value: valorAlucinacao,
-      name: `${erroInfo.modelo}: Alucinação`, 
-      itemStyle: { 
-        color: corBase,
-        opacity: 0.65, 
-        borderWidth: 1,
-        borderColor: '#fff'
-      },
-    });
+    modelos.push(erroInfo.modelo);
+    erros.push(erroInfo.porcentagem_erros);
+    alucinacoes.push(alucinacaoInfo ? alucinacaoInfo.porcentagem_alucinacao : 0);
   });
-  return seriesData;
+
+  return { modelos, erros, alucinacoes };
 });
 
+/**
+ * Configuração do gráfico de barras
+ */
 const option = computed(() => ({
+  title: {
+    left: 'center',
+  },
   tooltip: {
-    trigger: 'item',
+    trigger: 'axis',
+    axisPointer: { type: 'shadow' },
     formatter: (params: any) => {
-        const [modelo, tipo] = params.name.split(': ');
-        return `<b>${modelo}</b><br/>${tipo}: ${params.value}`;
-    }
+      const modelo = params[0]?.name || '';
+      let texto = `<b>${modelo}</b><br/>`;
+      params.forEach((p: any) => {
+        texto += `${p.marker} ${p.seriesName}: ${p.value}%<br/>`;
+      });
+      return texto;
+    },
   },
   legend: {
-    type: 'scroll',
-    orient: 'horizontal',
-    top: 'bottom',
-    left: 'left'
+    bottom: 0,
   },
-
+  grid: {
+    left: '3%',
+    right: '4%',
+    bottom: '10%',
+    containLabel: true,
+  },
+  xAxis: {
+    type: 'value',
+    boundaryGap: [0, 0.01],
+    name: '%',
+  },
+  yAxis: {
+    type: 'category',
+    data: chartData.value.modelos,
+  },
   series: [
     {
-      name: 'Desempenho por Modelo',
-      type: 'pie',
-      roseType: 'radius',
-      radius: ['10%', '75%'], 
-      center: ['50%', '50%'], 
-      avoidLabelOverlap: true,
-      
-      label: { 
-        show: false, 
-      },
-      labelLine: { 
-        show: false,
-      },
-      data: chartData.value,
+      name: 'Erros',
+      type: 'bar',
+      data: chartData.value.erros,
+      itemStyle: { color: '#f7931e' }, 
+    },
+    {
+      name: 'Alucinações',
+      type: 'bar',
+      data: chartData.value.alucinacoes,
+      itemStyle: { color: '#004C97' }, 
     },
   ],
 }));
