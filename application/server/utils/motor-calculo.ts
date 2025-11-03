@@ -1,3 +1,4 @@
+import { testeVibeCodingEngine } from './motor-calculo/vibe-coding.engine';
 import { TipoMetrica } from '@prisma/client'
 export * from './motor-calculo/index'
 
@@ -8,6 +9,7 @@ export const motor = {
   [TipoMetrica.DireitoAdministrativo]: direitoAdministrativoEngine,
   [TipoMetrica.Matematica]: testeMatematicaEngine,
   [TipoMetrica.RaciocinioLogico]: testeRaciocinioEngine,
+  [TipoMetrica.VibeCoding]: testeVibeCodingEngine,
 } as const
 
 export async function processarIndicador(metrica: TipoMetrica, output: any, gabarito: any) {

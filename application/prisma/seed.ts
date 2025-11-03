@@ -6,6 +6,7 @@ import { cartas, perguntas } from './cartas-servico.json'
 import direito from './direito-administrativo.json'
 import matematica from './matematica.json'
 import raciociniologico from './raciocinio-logico.json'
+import { vibeCodingExercises } from '../prisma/vibe-coding';
 //import { servicos } from './cartas.json'
 
 const prisma = new PrismaClient()
@@ -66,15 +67,22 @@ async function main() {
     }
   })
 
-   const rl = await prisma.metricas.create({
+  const rl = await prisma.metricas.create({
     data: {
       metricas: 'Raciocinio Logico',
       tipo: TipoMetrica.RaciocinioLogico,
     }
   })
- 
 
-await prisma.bancoDeQuestoes.createMany({
+  const vc = await prisma.metricas.create({
+    data: {
+      metricas: 'Vibe Coding',
+      tipo: TipoMetrica.VibeCoding,
+    }
+  })
+
+
+/* await prisma.bancoDeQuestoes.createMany({
     data: [
       {
         metricaId: tx.id,
@@ -172,6 +180,24 @@ await prisma.bancoDeQuestoes.createMany({
         gabarito: {
           gabarito: item.Gabarito 
         } satisfies TesteRaciocinioGabarito,
+      }
+    })//.filter((item, index) => 10 > index)
+  }) */
+
+  await prisma.bancoDeQuestoes.createMany({
+    data: vibeCodingExercises.map((item) => {
+      return {
+        metricaId: vc.id,
+        pergunta: {
+          problema: item.problema,
+          contexto: item.contexto,
+          baseScript: item.baseScript,
+          nivel: item.nivel,
+          tipo: item.tipo
+        } satisfies TesteVibeCodingQuestion,
+        gabarito: {
+          gabarito: item.gabarito 
+        } satisfies TesteVibeCodingGabarito,
       }
     })//.filter((item, index) => 10 > index)
   })

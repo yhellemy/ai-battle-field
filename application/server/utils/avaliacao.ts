@@ -9,6 +9,7 @@ export const avaliacao = {
   [TipoMetrica.DireitoAdministrativo]: direitoAdministrativo,
   [TipoMetrica.Matematica]: testeMatematica,
   [TipoMetrica.RaciocinioLogico]: testeRaciocinioLogico,
+  [TipoMetrica.VibeCoding]: testeVibeCoding,
 } as const
 
 export async function processarAvaliacaoLlm(metrica: TipoMetrica, modelo: ModelProvider, ctx: any) {

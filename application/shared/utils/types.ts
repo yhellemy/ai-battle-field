@@ -61,6 +61,23 @@ export interface TesteRaciocinioGabarito {
   gabarito: string
 }
 
+export type TesteVibeCodingQuestion = {
+  problema: string
+  contexto: string
+  baseScript: string
+  nivel: string
+  tipo: string
+}
+
+export type TesteVibeCodingOutput = {
+  problema: string
+  resposta: string
+  codeError: string | null
+}
+export interface TesteVibeCodingGabarito {
+  gabarito: string
+}
+
 export interface TesteGenericoInput {
   pergunta: string
 }

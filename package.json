@@ -3,7 +3,8 @@
   "type": "module",
   "private": true,
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "isolated-vm": "^6.0.2"
   },
   "peerDependencies": {
     "typescript": "^5"
