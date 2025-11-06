@@ -1,21 +1,24 @@
-import ivm from 'isolated-vm'
-import { sumTwoContext, sumTwoGabarito } from '~~/prisma/vibecoding/sum-two/sum-two-baseScript';
-const isolate = new ivm.Isolate({ memoryLimit: 128 })
+import { TipoMetrica } from "@prisma/client";
 
-export default defineEventHandler(async (event) => {
-    try {
-        const context = isolate.createContextSync()
-        const jail = context.global;
-        jail.setSync('global', jail.derefInto())
-        jail.setSync('log', function(...args: any) {
-            console.log(...args);
-        });
-        context.evalSync('log("hello world")');
-        const hostile = isolate.compileScriptSync(sumTwoContext.replace('{respostaModelo}', sumTwoGabarito));
-        await hostile.run(context)
-    } catch(e) {
-        if (e instanceof Error)
-            console.log(e)
-    }
-});
-// {respostaModelo}
+export default defineEventHandler( async (event) => {
+  const prisma = usePrisma()
+
+  // query aqui
+  return await prisma.$queryRaw<[Vibecoding]>`
+with total_vibecod as (
+SELECT met.id, count(*) as total
+FROM"Indicadores" as ind
+INNER JOIN  "Metricas" as met on met.id = ind."metricaId"
+INNER JOIN "Modelos" AS mls on ind."modeloId" = mls.id
+where tipo = 'VibeCoding'
+GROUP BY 1
+)
+SELECT met.tipo, mls.nome,ind.indicador,ROUND((CAST(count(ind.indicador) AS DECIMAL) / MAX(td.total))*100,2)  as count 
+FROM"Indicadores" as ind
+INNER JOIN  "Metricas" as met on met.id = ind."metricaId"
+INNER JOIN "Modelos" AS mls on ind."modeloId" = mls.id
+INNER JOIN total_vibecod td on td.id = met.id
+where tipo = 'VibeCoding'
+GROUP BY 1,2,3;
+`;
+})

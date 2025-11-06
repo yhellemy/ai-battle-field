@@ -1,9 +1,5 @@
 <template>
-    <div>
-        <!-- VibeCoding Chart Server -->
-    </div>
+  <div class="min-h-full">
+    
+  </div>
 </template>
-
-<script setup lang="ts">
-// Server-side logic for VibeCodingChart
-</script>

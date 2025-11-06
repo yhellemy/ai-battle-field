@@ -17,6 +17,7 @@ const { data: embedtestData, refresh: refreshEmbed } = useAsyncData('embedtest',
 const { data: matematicaData, refresh: refreshMatematica } = useAsyncData('matematica', () => $fetch<Matematica[]>('/api/matematica'))
 const { data: direitoChartData, refresh: refreshDireito } = useAsyncData('direito-adm', () => $fetch<DireitoAdministrativo[]>('/api/direito-adm'))
 const { data: raciocinioLogicoData, refresh: refreshRaciocinioLogico } = useAsyncData('raciociniologico', () => $fetch<RaciocinioLogico[]>('/api/raciociniologico'))
+const { data: vibecodeData, refresh: refreshVibecode } = useAsyncData('vibe-coding', () => $fetch<VibeCoding[]>('/api/vibe-coding'))
 
 
 onMounted(() => {
@@ -29,6 +30,7 @@ onMounted(() => {
       refreshDireito(),
       refreshMatematica(),
       refreshRaciocinioLogico(),
+      refreshVibecode(),
     ])
   }, 60000);
 });
@@ -101,7 +103,7 @@ onBeforeUnmount(() => {
               <div class="grid grid-flow-col justify-between items-center">
                 <div class="grid">
                   <div class="text-lg">
-                    Clareza da Resposta
+                    Concordância da Resposta
                   </div>
                   <div class="text-sm text-[var(--ui-text-dimmed)]">LLM como julgador</div>
                 </div>
@@ -171,6 +173,21 @@ onBeforeUnmount(() => {
               </div>
             </template>
             <MatematicaChart v-if="raciocinioLogicoData" :data="raciocinioLogicoData" :scatter />
+          </UCard>
+        </div>
+              <div class="col-span-12 aspect-video ring ring-default rounded-md">
+          <UCard :ui="{ body: '!p-0' }">
+            <template #header>
+              <div class="grid grid-flow-col justify-between items-center">
+                <div class="grid">
+                  <div class="text-lg">
+                    Criação de Código
+                  </div>
+                  <div class="text-sm text-[var(--ui-text-dimmed)]">Execução de Código Assistido por LLM</div>
+                </div>
+              </div>
+            </template>
+            <MatematicaChart v-if="vibecodeData" :data="vibecodeData" :scatter />
           </UCard>
         </div>
       </div>

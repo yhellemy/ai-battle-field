@@ -13,7 +13,8 @@ interface cols  {
   "clarezarespostametrica": number,
   "direitometrica": number,
   "matematica": number,
-  "raciociniometrica": number
+  "raciociniometrica": number,
+  "vibecode": number
 }
 
 const toast = useToast()
@@ -191,6 +192,27 @@ const columns: TableColumn<cols>[] = [
         variant: 'ghost',
         size: 'sm',
         label: 'Raciocínio lógico',
+        icon: isSorted
+          ? isSorted === 'asc'
+            ? 'mdi:chevron-down'
+            : 'mdi:chevron-up'
+          : 'i-lucide-arrow-up-down',
+        class: '-mx-2.5',
+        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
+      })
+    }
+  },
+  {
+    accessorKey: 'vibecode',
+
+    header: ({ column }) => {
+      const isSorted = column.getIsSorted()
+
+      return h(UButton, {
+        color: 'neutral',
+        variant: 'ghost',
+        size: 'sm',
+        label: 'Criação de Código',
         icon: isSorted
           ? isSorted === 'asc'
             ? 'mdi:chevron-down'

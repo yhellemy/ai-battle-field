@@ -82,7 +82,7 @@ async function main() {
   })
 
 
-/* await prisma.bancoDeQuestoes.createMany({
+ await prisma.bancoDeQuestoes.createMany({
     data: [
       {
         metricaId: tx.id,
@@ -182,7 +182,7 @@ async function main() {
         } satisfies TesteRaciocinioGabarito,
       }
     })//.filter((item, index) => 10 > index)
-  }) */
+  }) 
 
   await prisma.bancoDeQuestoes.createMany({
     data: vibeCodingExercises.map((item) => {

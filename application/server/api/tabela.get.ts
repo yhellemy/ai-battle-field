@@ -185,6 +185,28 @@ INNER JOIN "Metricas" AS met ON ind."metricaId" = met.id
 WHERE met.tipo in ('RaciocinioLogico')
 GROUP BY 1,2),
 
+vibecode as (SELECT
+    mls.id AS modelo_id,
+    mls.nome AS nome_modelo,
+ SUM(CASE ind.indicador
+     WHEN 1 THEN 1.0  
+     WHEN 2 THEN 0.5   
+     WHEN 0 THEN 0.0   
+     WHEN 3 THEN -1.0  
+     ELSE 0.0 END) AS Soma_Ponderada,
+ COUNT(ind.indicador) AS Total_Perguntas,
+  ROUND(CAST(SUM(CASE ind.indicador
+     WHEN 1 THEN 1.0
+     WHEN 2 THEN 0.5 
+     WHEN 0 THEN 0.0
+     WHEN 3 THEN -1.0
+     ELSE 0.0 END) AS NUMERIC(10, 4))/COUNT(ind.indicador),2) AS vibecode
+FROM "Indicadores" AS ind
+INNER JOIN "Modelos" AS mls ON ind."modeloId" = mls.id
+INNER JOIN "Metricas" AS met ON ind."metricaId" = met.id 
+WHERE met.tipo in ('VibeCoding')
+GROUP BY 1,2),
+
 consolidado AS (
 SELECT
     coalesce(d.nome_modelo, m.nome_modelo, r.nome_modelo, ct.nome_modelo, cr.nome_modelo, qr.nome_modelo) AS nome_modelo,
@@ -193,13 +215,16 @@ SELECT
     r.raciociniometrica :: float,
     ct.compreensaotextualmetrica :: float,
     cr.clarezarespostametrica :: float,
-    qr.qualidaderesposta :: float
+    qr.qualidaderesposta :: float,
+	vc.vibecode:: float
 FROM direito d
 FULL JOIN matematica m ON d.modelo_id = m.modelo_id
 FULL JOIN raciocinio r ON r.modelo_id = coalesce(d.modelo_id, m.modelo_id)
 FULL JOIN compreesao_textual ct ON ct.modelo_id = coalesce(d.modelo_id, m.modelo_id, r.modelo_id)
 FULL JOIN clareza_resposta cr ON cr.modelo_id = coalesce(d.modelo_id, m.modelo_id, r.modelo_id, ct.modelo_id)
 FULL JOIN qualidade_resposta qr ON qr.modelo_id = coalesce(d.modelo_id, m.modelo_id, r.modelo_id, ct.modelo_id, cr.modelo_id)
+FULL JOIN vibecode vc ON vc.modelo_id = coalesce(d.modelo_id, m.modelo_id, r.modelo_id, ct.modelo_id, cr.modelo_id,qr.modelo_id)
+
 )
 SELECT *
 FROM consolidado;;`;
