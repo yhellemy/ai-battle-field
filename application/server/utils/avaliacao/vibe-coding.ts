@@ -2,7 +2,6 @@ import { StringOutputParser } from "@langchain/core/output_parsers";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { RunnableSequence } from "@langchain/core/runnables";
 import { z } from 'zod';
-import ivm from 'isolated-vm'
 
 export type TesteVibeCodingContract = AplicacaoTesteContract<TesteVibeCodingQuestion, TesteVibeCodingOutput>
 
@@ -33,33 +32,15 @@ export async function testeVibeCoding(modelProvider: ModelProvider, ctx: TesteVi
   ]);
 
   const res = await chain.invoke({})
-  const isolate = new ivm.Isolate({ memoryLimit: 128 })
-
-  let codeError: null | string = null
 
   const extracted = /```javascript\n([\s\S]*?)```/.exec(res)
+  const codigo = ctx.contexto.replaceAll('{respostaModelo}', extracted ? extracted[1] : '')
 
-  try {
-    const context = isolate.createContextSync()
-    const jail = context.global;
-    jail.setSync('global', jail.derefInto())
-    jail.setSync('log', function(...args: any) {
-        console.log(...args);
-    });
-    context.evalSync('log("hello world")');
-    console.log('chegou aqui')
-    const hostile = isolate.compileScriptSync(ctx.contexto.replaceAll('{respostaModelo}', extracted ? extracted[1] : ''));
-    await hostile.run(context)
-    console.log('chegou aqui 2')
-  } catch(e) {
-      if (e instanceof Error) {
-        codeError = e.message
-      }
-  }
+  const codeReturns = await runSandbox(codigo);
 
   return {
     resposta: res,
     problema: ctx.problema,
-    codeError
+    codeError: codeReturns.error
   }
 }
