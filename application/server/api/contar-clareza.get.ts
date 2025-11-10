@@ -18,6 +18,7 @@ export default defineEventHandler(async (event) => {
               id: true
             },
           },
+          totalTokens: true
         },
       },
     },
@@ -28,10 +29,14 @@ export default defineEventHandler(async (event) => {
 
   return modelosComResultados.data.map(modelo => {
     const valores = modelo.resultados.map(resultado => {
-      return [
-        (resultado.bancoDeQuestoes.gabarito as unknown as ClarezaRespostaGabarito).resposta,
-        castFirstChar((resultado.jsonResultado as unknown as ClarezaRespostaOutput).resposta),
-      ];
+      // resultado.totalTokens
+      return {
+        value: [
+          (resultado.bancoDeQuestoes.gabarito as unknown as ClarezaRespostaGabarito).resposta,
+          castFirstChar((resultado.jsonResultado as unknown as ClarezaRespostaOutput).resposta)
+        ],
+        tokens: resultado.totalTokens
+      };
     });
 
     return {

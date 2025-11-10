@@ -47,6 +47,8 @@ export async function processarQuestao(id: number, modeloId: number) {
     questao.pergunta
   ))
 
+  const modelMetadata: ModelMetadata | null = (result as WithModelMetadata<object> | null)?.modelMetadata ?? null
+
   if (aiError) {
     return await prisma.resultados.create({
       data: {
@@ -59,7 +61,8 @@ export async function processarQuestao(id: number, modeloId: number) {
           name: aiError.name,
         },
         bancoDeQuestoesId: questao.id,
-        modeloId: modelo.id
+        modeloId: modelo.id,
+        totalTokens: 0
       },
     })
   }
@@ -69,7 +72,10 @@ export async function processarQuestao(id: number, modeloId: number) {
       tipoResultado: questao.metrica.tipo,
       jsonResultado: result,
       bancoDeQuestoesId: questao.id,
-      modeloId: modelo.id
+      modeloId: modelo.id,
+      totalTokens: modelMetadata?.usage
+      ? modelMetadata.usage.totalTokens
+      : 0
     },
   })
 }

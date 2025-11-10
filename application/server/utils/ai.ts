@@ -1,7 +1,9 @@
-import { Ollama } from "@langchain/ollama";
+import { ChatOllama } from "@langchain/ollama";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { ChatOpenAI, AzureChatOpenAI } from "@langchain/openai"
 import { Index } from '@upstash/vector'
+import { BaseMessage, MessageStructure, MessageType } from "@langchain/core/messages";
+import { AIMessageChunk } from "langchain";
 
 let _index: Index
 
@@ -16,7 +18,7 @@ export function useUpstashIndex() {
   return _index
 }
 
-export function getModel(providerModel: { provider: typeof PROVIDERS.OLLAMA; model: string }): Ollama;
+export function getModel(providerModel: { provider: typeof PROVIDERS.OLLAMA; model: string }): ChatOllama;
 
 export function getModel(providerModel: { provider: typeof PROVIDERS.GEMINI; model: string }): ChatGoogleGenerativeAI;
 
@@ -24,13 +26,13 @@ export function getModel(providerModel: { provider: typeof PROVIDERS.OPENAI; mod
 
 export function getModel(providerModel: { provider: typeof PROVIDERS.AZURE_OPENAI; model: string }): AzureChatOpenAI;
 
-export function getModel(providerModel: ModelProvider): Ollama | ChatGoogleGenerativeAI | AzureChatOpenAI;
+export function getModel(providerModel: ModelProvider): ChatOllama | ChatGoogleGenerativeAI | AzureChatOpenAI | ChatOpenAI;
 
 export function getModel(providerModel: ModelProvider) {
   let llm;
 
   if (providerModel.provider === PROVIDERS.OLLAMA) {
-    llm = new Ollama({
+    llm = new ChatOllama({
       baseUrl: process.env.OLLAMA_BASE_URL || "http://localhost:11434",
       model: providerModel.model,
     });
@@ -61,4 +63,45 @@ export function getModel(providerModel: ModelProvider) {
   }
 
   return llm
+}
+
+interface UsageMetadata {
+  totalTokens: number;
+  inputTokens: number;
+  outputTokens: number;
+}
+
+export interface ModelMetadata {
+  usage: UsageMetadata
+}
+
+export type WithModelMetadata<T extends Object> = T & { modelMetadata: ModelMetadata }
+
+export function processModelResponseMetadata(res: BaseMessage<MessageStructure, MessageType>): ModelMetadata {
+  let totalTokens = 0
+  let inputTokens = 0
+  let outputTokens = 0
+
+  if('lc_kwargs' in res) {
+    if ('usage_metadata' in res.lc_kwargs) {
+      const usage_metadata = res.lc_kwargs.usage_metadata
+      if (usage_metadata?.total_tokens) {
+        totalTokens = usage_metadata.total_tokens
+      }
+      if (usage_metadata?.input_tokens) {
+        inputTokens = usage_metadata.input_tokens
+      }
+      if (usage_metadata?.output_tokens) {
+        outputTokens = usage_metadata.output_tokens
+      }
+    }
+  }
+
+  return {
+    usage: {
+      totalTokens,
+      inputTokens,
+      outputTokens
+    }
+  }
 }

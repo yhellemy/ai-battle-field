@@ -1,9 +1,12 @@
 <script lang="ts">
-export type ValorTupla = [number, number];
+export type ValorDado = {
+  value: [number, number]; // [esperado, predito]
+  tokens: number;
+};
 
 export type ModeloDados = {
   modelo: string;
-  valores: ValorTupla[];
+  valores: ValorDado[];
 };
 
 export type DadosCompletos = ModeloDados[];
@@ -24,10 +27,10 @@ import {
 } from 'echarts/components';
 import VChart from 'vue-echarts';
 
-function calculateAverage(data: ValorTupla[]): number {
+function calculateAverage(data: ValorDado[]): number {
   let total = 0;
   for (let i = 0; i < data.length; i++) {
-    total += data[i]![1] === data[i]![0] ? 100 : 0;
+    total += data[i]!.value[1] === data[i]!.value[0] ? 100 : 0;
   }
   return total / data.length;
 }
@@ -83,6 +86,19 @@ const universalTransition = {
 
 const scatterOption = computed(() => ({
   color: colors,
+  tooltip: {
+    trigger: 'item',
+    formatter: (params: any) => {
+      // 'params.data' agora é o nosso objeto PontoDeDado
+      const data = params.data as ValorDado;
+      return `
+        <b>${params.seriesName}</b><br/>
+        Esperado: ${data.value[0]}<br/>
+        Predito: ${data.value[1]}<br/>
+        Tokens: ${data.tokens}
+      `;
+    }
+  },
   legend: {
     data: props.data?.map(item=>item.modelo) ?? [],
     bottom: 10,
@@ -139,6 +155,20 @@ const barOption = computed(() => ({
     trigger: 'axis',
     axisPointer: {
       type: 'shadow'
+    },
+    // O tooltip do gráfico de barras é por eixo, então mostraremos a média de tokens
+    formatter: (params: any) => {
+      const seriesData = props.data?.find(d => d.modelo === params[0].name);
+      if (!seriesData) return '';
+
+      const totalTokens = seriesData.valores.reduce((acc, curr) => acc + curr.tokens, 0);
+      const avgTokens = (totalTokens / seriesData.valores.length).toFixed(0);
+      
+      return `
+        <b>${params[0].name}</b><br/>
+        Acurácia: ${params[0].value.toFixed(2)}%<br/>
+        Uso Médio de Tokens: ${avgTokens}
+      `;
     }
   },
   xAxis: defu(commonAxisStyles, {
