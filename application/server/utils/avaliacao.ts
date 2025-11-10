@@ -62,6 +62,8 @@ export async function processarQuestao(id: number, modeloId: number) {
         },
         bancoDeQuestoesId: questao.id,
         modeloId: modelo.id,
+        inputTokens: 0,
+        outputTokens:0,
         totalTokens: 0
       },
     })
@@ -73,6 +75,12 @@ export async function processarQuestao(id: number, modeloId: number) {
       jsonResultado: result,
       bancoDeQuestoesId: questao.id,
       modeloId: modelo.id,
+      inputTokens: modelMetadata?.usage
+      ? modelMetadata.usage.inputTokens
+      : 0,
+       outputTokens: modelMetadata?.usage
+      ? modelMetadata.usage.outputTokens
+      : 0,
       totalTokens: modelMetadata?.usage
       ? modelMetadata.usage.totalTokens
       : 0

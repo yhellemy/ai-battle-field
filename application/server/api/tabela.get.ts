@@ -207,6 +207,17 @@ INNER JOIN "Metricas" AS met ON ind."metricaId" = met.id
 WHERE met.tipo in ('VibeCoding')
 GROUP BY 1,2),
 
+tokens as (SELECT
+    mls.id AS modelo_id,
+    mls.nome AS nome_modelo,
+	sum(res."inputTokens") as tokensentradas,
+	sum(res."outputTokens") as tokensaida,
+	sum(res."totalTokens") as tokenstotais
+	
+ FROM "Resultados" AS res
+INNER JOIN "Modelos" AS mls ON res."modeloId" = mls.id
+GROUP BY 1,2),
+
 consolidado AS (
 SELECT
     coalesce(d.nome_modelo, m.nome_modelo, r.nome_modelo, ct.nome_modelo, cr.nome_modelo, qr.nome_modelo) AS nome_modelo,
@@ -216,7 +227,11 @@ SELECT
     ct.compreensaotextualmetrica :: float,
     cr.clarezarespostametrica :: float,
     qr.qualidaderesposta :: float,
-	vc.vibecode:: float
+	vc.vibecode:: float,
+	tk.tokensentradas:: float,
+	tk.tokensaida:: float,
+	tk.tokenstotais:: float
+	
 FROM direito d
 FULL JOIN matematica m ON d.modelo_id = m.modelo_id
 FULL JOIN raciocinio r ON r.modelo_id = coalesce(d.modelo_id, m.modelo_id)
@@ -224,6 +239,7 @@ FULL JOIN compreesao_textual ct ON ct.modelo_id = coalesce(d.modelo_id, m.modelo
 FULL JOIN clareza_resposta cr ON cr.modelo_id = coalesce(d.modelo_id, m.modelo_id, r.modelo_id, ct.modelo_id)
 FULL JOIN qualidade_resposta qr ON qr.modelo_id = coalesce(d.modelo_id, m.modelo_id, r.modelo_id, ct.modelo_id, cr.modelo_id)
 FULL JOIN vibecode vc ON vc.modelo_id = coalesce(d.modelo_id, m.modelo_id, r.modelo_id, ct.modelo_id, cr.modelo_id,qr.modelo_id)
+FULL JOIN tokens tk on tk.modelo_id = coalesce(d.modelo_id, m.modelo_id, r.modelo_id, ct.modelo_id, cr.modelo_id,qr.modelo_id,vc.modelo_id)
 
 )
 SELECT *

@@ -78,7 +78,8 @@ model Resultados {
 
   modelo   Modelos @relation(fields: [modeloId], references: [id])
   modeloId Int
-
+  inputTokens Int
+  outputTokens Int
   totalTokens Int
 
   @@unique([bancoDeQuestoesId, modeloId])

@@ -14,7 +14,10 @@ interface cols  {
   "direitometrica": number,
   "matematica": number,
   "raciociniometrica": number,
-  "vibecode": number
+  "vibecode": number,
+  "tokensentradas": number,
+  "tokensaida": number,
+  "tokenstotais": number
 }
 
 const toast = useToast()
@@ -213,6 +216,69 @@ const columns: TableColumn<cols>[] = [
         variant: 'ghost',
         size: 'sm',
         label: 'Criação de Código',
+        icon: isSorted
+          ? isSorted === 'asc'
+            ? 'mdi:chevron-down'
+            : 'mdi:chevron-up'
+          : 'i-lucide-arrow-up-down',
+        class: '-mx-2.5',
+        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
+      })
+    }
+  },
+  {
+    accessorKey: 'tokensentradas',
+
+    header: ({ column }) => {
+      const isSorted = column.getIsSorted()
+
+      return h(UButton, {
+        color: 'neutral',
+        variant: 'ghost',
+        size: 'sm',
+        label: 'Total Tokens de Entrada',
+        icon: isSorted
+          ? isSorted === 'asc'
+            ? 'mdi:chevron-down'
+            : 'mdi:chevron-up'
+          : 'i-lucide-arrow-up-down',
+        class: '-mx-2.5',
+        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
+      })
+    }
+  },
+  {
+    accessorKey: 'tokensaida',
+
+    header: ({ column }) => {
+      const isSorted = column.getIsSorted()
+
+      return h(UButton, {
+        color: 'neutral',
+        variant: 'ghost',
+        size: 'sm',
+        label: 'Total Tokens de Saída',
+        icon: isSorted
+          ? isSorted === 'asc'
+            ? 'mdi:chevron-down'
+            : 'mdi:chevron-up'
+          : 'i-lucide-arrow-up-down',
+        class: '-mx-2.5',
+        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
+      })
+    }
+  },
+  {
+    accessorKey: 'tokenstotais',
+
+    header: ({ column }) => {
+      const isSorted = column.getIsSorted()
+
+      return h(UButton, {
+        color: 'neutral',
+        variant: 'ghost',
+        size: 'sm',
+        label: 'Total Tokens',
         icon: isSorted
           ? isSorted === 'asc'
             ? 'mdi:chevron-down'

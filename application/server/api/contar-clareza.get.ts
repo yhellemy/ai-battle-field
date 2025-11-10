@@ -18,7 +18,9 @@ export default defineEventHandler(async (event) => {
               id: true
             },
           },
-          totalTokens: true
+          totalTokens: true,
+          inputTokens: true,
+          outputTokens: true
         },
       },
     },
@@ -35,7 +37,9 @@ export default defineEventHandler(async (event) => {
           (resultado.bancoDeQuestoes.gabarito as unknown as ClarezaRespostaGabarito).resposta,
           castFirstChar((resultado.jsonResultado as unknown as ClarezaRespostaOutput).resposta)
         ],
-        tokens: resultado.totalTokens
+        tokenstotal: resultado.totalTokens,
+        tokensinput: resultado.inputTokens,
+        tokensoutput: resultado.outputTokens
       };
     });
 

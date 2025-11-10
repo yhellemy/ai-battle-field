@@ -1,7 +1,9 @@
 <script lang="ts">
 export type ValorDado = {
   value: [number, number]; // [esperado, predito]
-  tokens: number;
+  tokenstotal: number; 
+  tokensinput: number;  // Novo campo
+  tokensoutput: number; // Novo campo
 };
 
 export type ModeloDados = {
@@ -95,7 +97,9 @@ const scatterOption = computed(() => ({
         <b>${params.seriesName}</b><br/>
         Esperado: ${data.value[0]}<br/>
         Predito: ${data.value[1]}<br/>
-        Tokens: ${data.tokens}
+        <b>Tokens Total: ${data.tokenstotal}</b><br/>
+           Tokens Input: ${data.tokensinput}<br/>
+           Tokens Output: ${data.tokensoutput}
       `;
     }
   },
@@ -161,13 +165,27 @@ const barOption = computed(() => ({
       const seriesData = props.data?.find(d => d.modelo === params[0].name);
       if (!seriesData) return '';
 
-      const totalTokens = seriesData.valores.reduce((acc, curr) => acc + curr.tokens, 0);
-      const avgTokens = (totalTokens / seriesData.valores.length).toFixed(0);
+const count = seriesData.valores.length;
+     if (count === 0) return '';
+
+      // Calcula todas as médias de uma vez
+    const tokenStats = seriesData.valores.reduce((acc, curr) => {
+     acc.total += curr.tokenstotal;
+     acc.input += curr.tokensinput;
+     acc.output += curr.tokensoutput;
+    return acc;
+    }, { total: 0, input: 0, output: 0 });
+
+    const avgTotal = (tokenStats.total / count).toFixed(0);
+    const avgInput = (tokenStats.input / count).toFixed(0);
+    const avgOutput = (tokenStats.output / count).toFixed(0);
       
-      return `
-        <b>${params[0].name}</b><br/>
-        Acurácia: ${params[0].value.toFixed(2)}%<br/>
-        Uso Médio de Tokens: ${avgTokens}
+    return `
+     <b>${params[0].name}</b><br/>
+     Acurácia: ${params[0].value.toFixed(2)}%<br/>
+     Média Tokens Total: ${avgTotal}<br/>
+     Média Tokens Entrada: ${avgInput}<br/>
+     Média Tokens Saída: ${avgOutput}
       `;
     }
   },
