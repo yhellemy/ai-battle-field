@@ -1,6 +1,9 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import { fileURLToPath  } from 'node:url'
 export default defineNuxtConfig({
+  nitro: {
+    preset: "bun",
+  },
   vite: {
     server: {
       allowedHosts: true
