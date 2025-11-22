@@ -1,14 +1,12 @@
-import { StringOutputParser } from "@langchain/core/output_parsers";
-import { ChatPromptTemplate } from "@langchain/core/prompts";
-import { RunnableSequence } from "@langchain/core/runnables";
+import { createAgent } from "langchain";
 import { z } from 'zod';
 
-export type direitoAdministrativoContract = AplicacaoTesteContract<DireitoAdmQuestion, DireitoAdmOutput>
+export type direitoAdministrativoContract = AplicacaoTesteContract<DireitoAdmQuestion, WithModelMetadata<DireitoAdmOutput>>
 
-export async function direitoAdministrativo(modelProvider: ModelProvider, ctx: DireitoAdmQuestion): Promise<DireitoAdmOutput>{
-  const llm = getModel(modelProvider)
+export async function direitoAdministrativo(modelProvider: ModelProvider, ctx: DireitoAdmQuestion): Promise<WithModelMetadata<DireitoAdmOutput>> {
+  const model = getModel(modelProvider)
 
-  const system = `Você é um especialista em Direito Administrativo, com conhecimento profundo da doutrina, jurisprudência e legislação brasileira. Sua tarefa é analisar uma frase e determinar sua correção jurídica com alta precisão e honestidade.
+  const systemPrompt = `Você é um especialista em Direito Administrativo, com conhecimento profundo da doutrina, jurisprudência e legislação brasileira. Sua tarefa é analisar uma frase e determinar sua correção jurídica com alta precisão e honestidade.
 
 Siga estritamente as seguintes instruções de formato:
 
@@ -24,26 +22,22 @@ Siga estritamente as seguintes instruções de formato:
     * Para uma resposta "Não Sei", explique honestamente a limitação que o impede de responder. NÃO critique a pergunta (dizendo que é ambígua ou mal formulada). Em vez disso, foque em sua própria capacidade, por exemplo:
         * "Não foi possível localizar jurisprudência consolidada a respeito."
         * "Meu conhecimento sobre esta portaria/lei específica é limitado."
-        * "Trata-se de um tema muito específico ou recente sobre o qual não possuo dados suficientes."` 
-  const promptTemplate = ChatPromptTemplate.fromMessages([
-    ["system", system],
-    ["human", "Frase: {pergunta}"]
-  ]);
+        * "Trata-se de um tema muito específico ou recente sobre o qual não possuo dados suficientes."`
 
-  const chain = RunnableSequence.from([
-    {
-      pergunta: () => ctx.pergunta,
-      nivel: () => ctx.nivel,
-    },
-    promptTemplate,
-    llm,
-    new StringOutputParser(),
-  ]);
+  const agent = createAgent({
+    model,
+    systemPrompt,
+  })
 
-const res = await chain.invoke({});
+  const userMessage = `Frase: ${ctx.pergunta}`
 
+  const result = await agent.invoke(
+    { messages: [{ role: "user", content: userMessage }] }
+  )
 
-  let textoAProcessar = res.trim();
+  const responseMessage = result.messages.at(-1)!;
+
+  let textoAProcessar = responseMessage.text.trim();
 
 
   const match = textoAProcessar.match(/<\/think>\s*([\s\S]*)/);
@@ -56,9 +50,12 @@ const res = await chain.invoke({});
   const respostaFinal = linhas[0].trim();
   const justificativaFinal = linhas.slice(1).join('\n').trim();
 
-return {
+  const modelMetadata = processModelResponseMetadata(responseMessage)
+
+  return {
     pergunta: ctx.pergunta,
     resposta: respostaFinal,
-    justificativa_resposta: justificativaFinal || textoAProcessar
+    justificativa_resposta: justificativaFinal || textoAProcessar,
+    modelMetadata,
   };
 }

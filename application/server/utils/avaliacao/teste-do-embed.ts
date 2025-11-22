@@ -1,12 +1,10 @@
-import { StringOutputParser } from "@langchain/core/output_parsers";
-import { ChatPromptTemplate } from "@langchain/core/prompts";
-import { RunnableSequence } from "@langchain/core/runnables";
+import { createAgent } from "langchain";
 import { z } from 'zod';
 
-export type TesteDoEmbedContract = AplicacaoTesteContract<TesteDoEmbedQuestion, TesteDoEmbedOutput>
+export type TesteDoEmbedContract = AplicacaoTesteContract<TesteDoEmbedQuestion, WithModelMetadata<TesteDoEmbedOutput>>
 
-export async function testeDoEmbed(modelProvider: ModelProvider, ctx: TesteDoEmbedQuestion): Promise<TesteDoEmbedOutput>{
-  const llm = getModel(modelProvider)
+export async function testeDoEmbed(modelProvider: ModelProvider, ctx: TesteDoEmbedQuestion): Promise<WithModelMetadata<TesteDoEmbedOutput>> {
+  const model = getModel(modelProvider)
 
   const index = useUpstashIndex()
 
@@ -50,34 +48,42 @@ export async function testeDoEmbed(modelProvider: ModelProvider, ctx: TesteDoEmb
   **[Contexto]**
 
   \`\`\`
-  {rag}
+  ${rag}
   \`\`\``
 
-  const promptTemplate = ChatPromptTemplate.fromMessages([
-    ["system", system],
-    ["human", `
+  const agent = createAgent({
+    model,
+    systemPrompt: system,
+  })
+
+  const userMessage = `
     **[Pergunta]**
     \`\`\`
-    [{pergunta}]
-    \`\`\``],
-    ['placeholder', '{agent_scratchpad}'],
-  ]);
+    [${ctx.pergunta}]
+    \`\`\``
 
-  const chain = RunnableSequence.from([
-    {
-      pergunta: () => ctx.pergunta,
-      rag: () => rag
-    },
-    promptTemplate,
-    llm,
-    new StringOutputParser(),
-  ]);
+  const result = await agent.invoke(
+    { messages: [{ role: "user", content: userMessage }] }
+  )
 
-  const res = await chain.invoke({})
-//console.log("Resposta final:", res);
+  const responseMessage = result.messages.at(-1)!;
+
+  let textoAProcessar: string;
+
+  const match = responseMessage.text.match(/<\/think>\s*([\s\S]*)/);
+
+  if (match) {
+    textoAProcessar = match[1].trim();
+  } else {
+    textoAProcessar = responseMessage.text.trim();
+  }
+
+  const modelMetadata = processModelResponseMetadata(responseMessage)
+
   return {
-    resposta: res,
+    resposta: textoAProcessar,
     pergunta: ctx.pergunta,
-    rag
+    rag,
+    modelMetadata
   }
 }

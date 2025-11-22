@@ -1,46 +1,45 @@
-import { StringOutputParser } from "@langchain/core/output_parsers";
-import { ChatPromptTemplate } from "@langchain/core/prompts";
-import { RunnableSequence } from "@langchain/core/runnables";
+import { createAgent } from "langchain";
 import { z } from 'zod';
 
-export type TesteVibeCodingContract = AplicacaoTesteContract<TesteVibeCodingQuestion, TesteVibeCodingOutput>
+export type TesteVibeCodingContract = AplicacaoTesteContract<TesteVibeCodingQuestion, WithModelMetadata<TesteVibeCodingOutput>>
 
-export async function testeVibeCoding(modelProvider: ModelProvider, ctx: TesteVibeCodingQuestion): Promise<TesteVibeCodingOutput> {
-  const llm = getModel(modelProvider)
+export async function testeVibeCoding(modelProvider: ModelProvider, ctx: TesteVibeCodingQuestion): Promise<WithModelMetadata<TesteVibeCodingOutput>> {
+  const model = getModel(modelProvider)
 
   console.log(ctx.contexto)
 
-  const promptTemplate = ChatPromptTemplate.fromMessages([
-    ["system", `
+  const systemPrompt = `
       // A sua única saída deve ser um bloco de código JavaScript.
       // Não forneça nenhuma introdução, explicação ou conclusão em texto.
       // Qualquer comentário ou anotação deve ser feito estritamente dentro do código, utilizando //.
       // Siga rigorosamente estas instruções para a seguinte solicitação:
-    `],
-    ['human', '{problema}\n{baseScript}'],
-    ['placeholder', '{agent_scratchpad}'],
-  ]);
+    `
 
-  const chain = RunnableSequence.from([
-    {
-      problema: () => ctx.problema,
-      baseScript: () => ctx.baseScript
-    },
-    promptTemplate,
-    llm,
-    new StringOutputParser(),
-  ]);
+  const agent = createAgent({
+    model,
+    systemPrompt,
+  })
 
-  const res = await chain.invoke({})
+  const userMessage = `${ctx.problema}\n${ctx.baseScript}`
+
+  const result = await agent.invoke(
+    { messages: [{ role: "user", content: userMessage }] }
+  )
+
+  const responseMessage = result.messages.at(-1)!;
+  const res = responseMessage.text;
 
   const extracted = /```javascript\n([\s\S]*?)```/.exec(res)
   const codigo = ctx.contexto.replaceAll('{respostaModelo}', extracted ? extracted[1] : '')
 
   const codeReturns = await runSandbox(codigo);
 
+  const modelMetadata = processModelResponseMetadata(responseMessage)
+
   return {
     resposta: res,
     problema: ctx.problema,
-    codeError: codeReturns.error
+    codeError: codeReturns.error,
+    modelMetadata
   }
 }

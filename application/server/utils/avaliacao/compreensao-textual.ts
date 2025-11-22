@@ -1,15 +1,14 @@
-import { StringOutputParser } from "@langchain/core/output_parsers";
-import { ChatPromptTemplate } from "@langchain/core/prompts";
-import { RunnableSequence } from "@langchain/core/runnables";
+import { createAgent } from "langchain";
 import { z } from 'zod';
 
-export type CompreensaoTextualContract = AplicacaoTesteContract<ComprTextualQuestion, ComprTextualOutput>
+export type CompreensaoTextualContract = AplicacaoTesteContract<ComprTextualQuestion, WithModelMetadata<ComprTextualOutput>>
 
-export async function compreensaoTextual(modelProvider: ModelProvider, ctx: ComprTextualQuestion): Promise<ComprTextualOutput>{
-  const llm = getModel(modelProvider)
+export async function compreensaoTextual(modelProvider: ModelProvider, ctx: ComprTextualQuestion): Promise<WithModelMetadata<ComprTextualOutput>> {
+  const model = getModel(modelProvider)
 
-  const system = `**Objetivo:** O objetivo deste prompt é avaliar a capacidade do modelo de Inferência de Linguagem Natural (NLI) em\n
-  identificar a relação lógica entre uma Premissa e uma Hipótese, **estritamente com base nas informações contidas na Premissa**, dentro\n
+  const systemPrompt = `**Objetivo:** O objetivo deste prompt é avaliar a capacidade do modelo de Inferência de Linguagem Natural (NLI) em
+
+  identificar a relação lógica entre uma Premissa e uma Hipótese, **estritamente com base nas informações contidas na Premissa**, dentro
   do contexto do Governo de Goiás.
  
   **Instruções para o Modelo:**
@@ -23,39 +22,36 @@ export async function compreensaoTextual(modelProvider: ModelProvider, ctx: Comp
 
   * **implicação:** Se a Hipótese for necessariamente verdadeira **com base na Premissa**. A Premissa implica a Hipótese.
   * **contradição:** Se a Hipótese for necessariamente falsa ou impossível **com base na Premissa**. A Premissa contradiz a Hipótese.
- A sua resposta deverá ser direta, respondendo apenas as palavaras *implicação* ou *contradição*` 
-  const promptTemplate = ChatPromptTemplate.fromMessages([
-    ["system", system],
-    ["human", "Premissa: {premissa}\nHipótese: {hipotese}"],
-  ]);
+ A sua resposta deverá ser direta, respondendo apenas as palavaras *implicação* ou *contradição*`
 
-  const chain = RunnableSequence.from([
-    {
-      categoria: () => ctx.categoria,
-      premissa: () => ctx.premissa,
-      hipotese: () => ctx.hipotese,
-      nivel: () => ctx.nivel,
-    },
-    promptTemplate,
-    llm,
-    new StringOutputParser(),
-  ]);
+  const agent = createAgent({
+    model,
+    systemPrompt,
+  })
 
-const res = await chain.invoke({});
+  const userMessage = `Premissa: ${ctx.premissa}\nHipótese: ${ctx.hipotese}`
 
-let textoAProcessar: string;
+  const result = await agent.invoke(
+    { messages: [{ role: "user", content: userMessage }] }
+  )
 
-const match = res.match(/<\/think>\s*([\s\S]*)/);
+  const responseMessage = result.messages.at(-1)!;
 
-if (match) {
-  textoAProcessar = match[1].trim();
-} else {
-  textoAProcessar = res.trim();
-}
+  let textoAProcessar: string;
 
+  const match = responseMessage.text.match(/<\/think>\s*([\s\S]*)/);
+
+  if (match) {
+    textoAProcessar = match[1].trim();
+  } else {
+    textoAProcessar = responseMessage.text.trim();
+  }
+
+  const modelMetadata = processModelResponseMetadata(responseMessage)
 
   return {
-    resposta: textoAProcessar
+    resposta: textoAProcessar,
+    modelMetadata,
   };
- 
+
 }
