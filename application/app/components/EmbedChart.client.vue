@@ -4,6 +4,9 @@ export interface TesteDoEmbed {
   tipo: string;
   nome: string;
   indicador: number;
+  tokensentradas: string;
+  tokensaida: string;
+  tokenstotais: string;
   count: number;
 }
 
@@ -109,20 +112,65 @@ const option = computed(() => {
       },
       data: nomes.map(nome => {
         const item = props.data!.find(d => d.nome === nome && d.indicador === indicador);
-        return item ? item.count : 0; 
+        
+        if (item) {
+          return {
+            
+            value: Number(item.count), 
+            
+            tokensentradas: Number(item.tokensentradas),
+            tokensaida: Number(item.tokensaida),
+            tokenstotais: Number(item.tokenstotais)
+          };
+        }
+        return 0; 
       }),
     };
   });
 
   return {
     color: indicadores.map(indicador => CORES[indicador]),
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        type: 'shadow', 
-      },
-      valueFormatter: (indicador: number) => indicador + '%'
-    },
+tooltip: {
+  trigger: 'axis',
+  axisPointer: { type: 'shadow' },
+  formatter: (params: any) => {
+    const nome = params[0].axisValue;
+
+    /* === SOMA DOS TOKENS POR NOME === */
+    let totalEntrada = 0;
+    let totalSaida = 0;
+    let totalTokens = 0;
+
+    params.forEach((p: any) => {
+      if (p.data) {
+        totalEntrada += p.data.tokensentradas ?? 0;
+        totalSaida   += p.data.tokensaida ?? 0;
+        totalTokens  += p.data.tokenstotais ?? 0;
+      }
+    });
+
+    /* === BLOCO DAS SÉRIES (INDICADORES) === */
+    let html = `<strong>${nome}</strong><br/><br/>`;
+
+    params.forEach((p: any) => {
+      html += `
+        <span style="color:${p.color};font-weight:bold">${p.seriesName}</span>:
+        ${p.data?.value ?? 0}%<br/>
+      `;
+    });
+
+    /* === BLOCO FINAL DOS TOKENS POR NOME (AGRUPADO) === */
+    html += `
+      <br/>
+      <strong>Tokens Entrada:</strong> ${totalEntrada.toFixed(2)}<br/>
+      <strong>Tokens Saída:</strong> ${totalSaida.toFixed(2)}<br/>
+      <strong>Tokens Totais:</strong> ${totalTokens.toFixed(2)}<br/>
+    `;
+
+    return html;
+  }
+},
+
     legend: {
     data: indicadores.map(i => `${VALORES[i]}`),
     top: 'top',
