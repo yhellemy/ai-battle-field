@@ -153,18 +153,14 @@ tooltip: {
     let html = `<strong>${nome}</strong><br/><br/>`;
 
     params.forEach((p: any) => {
-      html += `
-        <span style="color:${p.color};font-weight:bold">${p.seriesName}</span>:
-        ${p.data?.value ?? 0}%<br/>
-      `;
+     html += `${p.marker} <span style="display:inline-block; width: 160px;">${p.seriesName}:</span> <b>${p.data?.value ?? 0}%</b><br/>`;
     });
 
-    /* === BLOCO FINAL DOS TOKENS POR NOME (AGRUPADO) === */
     html += `
       <br/>
-      <strong>Tokens Entrada:</strong> ${totalEntrada.toFixed(2)}<br/>
-      <strong>Tokens Saída:</strong> ${totalSaida.toFixed(2)}<br/>
-      <strong>Tokens Totais:</strong> ${totalTokens.toFixed(2)}<br/>
+      Média Tokens Entrada: <strong>${totalEntrada.toFixed(2)}</strong><br/>
+      Média Tokens Saída: <strong>${totalSaida.toFixed(2)}</strong><br/>
+      Média Tokens Totais: <strong>${totalTokens.toFixed(2)}</strong><br/>
     `;
 
     return html;

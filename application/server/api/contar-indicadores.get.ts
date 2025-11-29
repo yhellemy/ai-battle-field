@@ -1,80 +1,45 @@
 import { TipoMetrica } from "@prisma/client";
 
-export default defineEventHandler(async (event) => {
-  const prisma = usePrisma();
-
-  const contagensDetalhadas = await prisma.indicadores.groupBy({
-    by: ['modeloId', 'indicador'],
-    _count: {
-      _all: true,
-    },
-    where: {
-      metrica: {
-        tipo: TipoMetrica.CompreensaoTextual
-      }
-    }
-  });
-
-  const agregadosPorModelo = await prisma.indicadores.groupBy({
-    by: ['modeloId'],
-    _count: {
-      _all: true,
-    },
-    _avg: {
-      indicador: true,
-    },
-    where: {
-      metrica: {
-        tipo: TipoMetrica.CompreensaoTextual
-      }
-    }
-  });
-
-  const modelos = await prisma.modelos.findMany({
-    select: { id: true, nome: true },
-  });
+export default defineEventHandler( async (event) => {
+  const prisma = usePrisma()
   
-  const mapaNomesModelo = new Map(modelos.map(m => [m.id, m.nome]));
+  return await prisma.$queryRaw<ContarIndicadoresResponse[]>`
+with agregados_por_modelo AS (
+    SELECT
+        ind."modeloId",
+        COUNT(*) AS total_indicadores,
+        AVG(ind.indicador)::DECIMAL(10,2) AS media_indicador,
+		count(*) AS contagem
+    FROM "Indicadores" ind
+    INNER JOIN "Metricas" met ON met.id = ind."metricaId"
+    WHERE met.tipo = 'CompreensaoTextual'
+    GROUP BY ind."modeloId"
+),
+tokens as (
+SELECT
+res."modeloId" AS modelo_id,
+ROUND(AVG(res."inputTokens"),2) as tokensentradas,
+ROUND(AVG(res."outputTokens"),2) as tokensaida,
+ROUND(AVG(res."totalTokens"),2) as tokenstotais
+FROM "Resultados" AS res
+where "tipoResultado" = 'CompreensaoTextual'
+GROUP BY 1)
 
-  const mapaAgregados = new Map(
-    agregadosPorModelo.map((item) => [
-      item.modeloId,
-      {
-        total: item._count._all,
-        media: item._avg.indicador,
-      },
-    ])
-  );
+SELECT
+    ag."modeloId",
+    tokensentradas,
+    tokensaida,
+    tokenstotais,
+    mdl.nome AS "modeloNome",
+    ag.media_indicador AS "totalIndicadores",
+    ag.media_indicador AS "mediaIndicadores",
+	ag.media_indicador,
+    ag.contagem::INT,
+    ROUND((ag.contagem::DECIMAL / ag.total_indicadores), 4) AS proporcao
+FROM agregados_por_modelo ag     
+INNER JOIN "Modelos" mdl  ON mdl.id = ag."modeloId"
+INNER JOIN tokens t on t.modelo_id = ag."modeloId"
+;
 
-  const resultadoAgrupado = contagensDetalhadas.reduce((acc, item) => {
-    const { modeloId, indicador } = item;
-    const contagem = item._count._all;
-    
-    const agregados = mapaAgregados.get(modeloId);
-    if (!agregados) return acc;
-
-    const totalDoModelo = agregados.total;
-
-    if (!acc[modeloId]) {
-      acc[modeloId] = {
-        modeloId: modeloId,
-        modeloNome: mapaNomesModelo.get(modeloId) || 'Desconhecido',
-        totalIndicadores: totalDoModelo,
-        mediaIndicadores: agregados.media, // NOVO: Adiciona a média aqui!
-        metricas: [],
-      };
-    }
-
-    // Adicione a métrica detalhada.
-    acc[modeloId].metricas.push({
-      indicador: indicador,
-      contagem: contagem,
-      proporcao: totalDoModelo > 0 ? contagem / totalDoModelo : 0,
-    });
-
-    return acc;
-  }, {} as Record<number, any>);
-
-  // Retornar os valores do objeto como um array.
-  return Object.values(resultadoAgrupado);
-});
+  `;
+})

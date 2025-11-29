@@ -181,11 +181,11 @@ const count = seriesData.valores.length;
     const avgOutput = (tokenStats.output / count).toFixed(0);
       
     return `
-     <b>${params[0].name}</b><br/>
-     Acurácia: ${params[0].value.toFixed(2)}%<br/>
-     Média Tokens Total: ${avgTotal}<br/>
-     Média Tokens Entrada: ${avgInput}<br/>
-     Média Tokens Saída: ${avgOutput}
+     <strong>${params[0].name}</strong><br/><br/>
+     Assertividade: <strong>${params[0].value.toFixed(2)}%<br/></strong>
+     Média Tokens Total: <strong>${avgTotal}<br/></strong>
+     Média Tokens Entrada: <strong>${avgInput}<br/></strong>
+     Média Tokens Saída: <strong>${avgOutput}</strong>
       `;
     }
   },

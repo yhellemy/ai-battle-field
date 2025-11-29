@@ -4,7 +4,7 @@ import { sumTwoContext, sumTwoGabarito } from '~~/prisma/vibecoding/sum-two/sum-
 
 export default defineEventHandler(async (event) => {
     const codigoDoModelo = sumTwoGabarito; 
-    const codigoParaExecutar = sumTwoContext.replaceAll('{respostaModelo}', '');
+    const codigoParaExecutar = sumTwoContext.replaceAll('{respostaModelo}', codigoDoModelo);
 
     return await runSandbox(codigoParaExecutar);
 });

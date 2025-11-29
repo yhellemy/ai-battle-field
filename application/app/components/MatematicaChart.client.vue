@@ -153,11 +153,11 @@ const option = computed(() => {
 
         if (tokens) {
           html += `
-            <div style="margin-top: 12px; padding-top: 1px; border-top: 1px solid rgba(255,255,255,0.2); font-size: 12px; color: #333; line-height: 1.4;">
-              
-              Média Tokens Entrada: ${tokens.tokensentradas} <br/>
-              Média Tokens Saída: ${tokens.tokensaida} <br/>
-              Média Tokens Total: <b>${tokens.tokenstotais}</b>
+            <div>
+            <br/>
+             Média Tokens Entrada: <strong>${tokens.tokensentradas}</strong> <br/>
+             Média Tokens Saída:  <strong>${tokens.tokensaida}</strong> <br/>
+             Média Tokens Total:  <strong>${tokens.tokenstotais}</strong><br/>
             </div>
           `;
         }

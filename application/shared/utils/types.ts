@@ -129,6 +129,10 @@ export interface ContarIndicadoresResponse {
   modeloNome: string;
   totalIndicadores: number;
   mediaIndicadores: number;
+  tokensentradas: Number;
+  tokensaida: Number;
+  tokenstotais: Number;
+
   metricas: Metrica[];
 }
 

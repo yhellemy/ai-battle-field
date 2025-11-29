@@ -109,7 +109,7 @@ async function main() {
         } satisfies ComprTextualQuestion,
         gabarito: { resposta: item.gabarito },
       }
-    })//.filter((item, index) => 10 > index)
+    }).filter((item, index) => 10 > index)
   })
 
   await prisma.bancoDeQuestoes.createMany({
@@ -122,7 +122,7 @@ async function main() {
         } satisfies ClarezaRespostaQuestao,
         gabarito: { resposta: item.gabarito } satisfies ClarezaRespostaGabarito,
       }
-    })//.filter((item, index) => 10 > index)
+    }).filter((item, index) => 10 > index)
   })
 
   await prisma.bancoDeQuestoes.createMany({
@@ -134,7 +134,7 @@ async function main() {
         } satisfies TesteDoEmbedQuestion,
         gabarito: {} satisfies TesteDoEmbedGabarito,
       }
-    })//.filter((item, index) => 10 > index)
+    }).filter((item, index) => 10 > index)
   })
 
   await prisma.bancoDeQuestoes.createMany({
@@ -150,7 +150,7 @@ async function main() {
           justificativa: item.justificativa
         } satisfies DireitoAdmGabarito,
       }
-    })
+    }).filter((item, index) => 10 > index)
   })
 
     await prisma.bancoDeQuestoes.createMany({
@@ -166,7 +166,7 @@ async function main() {
           gabarito: item.solution 
         } satisfies TesteMatematicaGabarito,
       }
-    })//.filter((item, index) => 10 > index)
+    }).filter((item, index) => 10 > index)
   })
 
     await prisma.bancoDeQuestoes.createMany({
@@ -181,7 +181,7 @@ async function main() {
           gabarito: item.Gabarito 
         } satisfies TesteRaciocinioGabarito,
       }
-    })//.filter((item, index) => 10 > index)
+    }).filter((item, index) => 10 > index)
   }) 
 
   await prisma.bancoDeQuestoes.createMany({
