@@ -1,21 +1,15 @@
-import { ChatOllama } from "@langchain/ollama";
+import { ChatOllama, OllamaEmbeddings } from "@langchain/ollama";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { ChatOpenAI, AzureChatOpenAI } from "@langchain/openai"
-import { Index } from '@upstash/vector'
 import { BaseMessage, MessageStructure, MessageType } from "@langchain/core/messages";
 import { AIMessageChunk } from "langchain";
 
-let _index: Index
-
-export function useUpstashIndex() {
-  if (!_index) {
-    _index = new Index({
-      url: process.env.UPSTASH_VECTOR_REST_URL!,
-      token: process.env.UPSTASH_VECTOR_REST_TOKEN!,
-    })
-  }
-
-  return _index
+export async function generateEmbedding(text: string): Promise<number[]> {
+  const embeddings = new OllamaEmbeddings({
+    model: "bge-m3",
+    baseUrl: process.env.OLLAMA_BASE_URL || "http://localhost:11434",
+  });
+  return await embeddings.embedQuery(text);
 }
 
 export function getModel(providerModel: { provider: typeof PROVIDERS.OLLAMA; model: string }): ChatOllama;
@@ -36,20 +30,20 @@ export function getModel(providerModel: ModelProvider) {
       baseUrl: process.env.OLLAMA_BASE_URL || "http://localhost:11434",
       model: providerModel.model,
     });
-  } 
-  else if(providerModel.provider === PROVIDERS.GEMINI) {
+  }
+  else if (providerModel.provider === PROVIDERS.GEMINI) {
     llm = new ChatGoogleGenerativeAI({
       model: providerModel.model,
       apiKey: process.env.GEMINI_API_KEY
     })
   }
-  else if(providerModel.provider === PROVIDERS.OPENAI) {
+  else if (providerModel.provider === PROVIDERS.OPENAI) {
     llm = new ChatOpenAI({
       model: providerModel.model,
       apiKey: process.env.OPENAI_API_KEY
     })
   }
-  else if(providerModel.provider === PROVIDERS.AZURE_OPENAI) {
+  else if (providerModel.provider === PROVIDERS.AZURE_OPENAI) {
     llm = new AzureChatOpenAI({
       model: providerModel.model,
       azureOpenAIApiKey: process.env.AZURE_OPENAI_API_KEY!,
@@ -58,7 +52,7 @@ export function getModel(providerModel: ModelProvider) {
       azureOpenAIEndpoint: process.env.AZURE_OPENAI_ENDPOINT!,
     })
   }
-  else if(llm === undefined) {
+  else if (llm === undefined) {
     throw new Error('invalid provider')
   }
 
@@ -82,7 +76,7 @@ export function processModelResponseMetadata(res: BaseMessage<MessageStructure, 
   let inputTokens = 0
   let outputTokens = 0
 
-  if('lc_kwargs' in res) {
+  if ('lc_kwargs' in res) {
     if ('usage_metadata' in res.lc_kwargs) {
       const usage_metadata = res.lc_kwargs.usage_metadata
       if (usage_metadata?.total_tokens) {

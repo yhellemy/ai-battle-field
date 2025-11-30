@@ -1,5 +1,5 @@
 import { PrismaClient, TipoMetrica, Provider } from '@prisma/client'
-import { Index } from "@upstash/vector"
+import { generateEmbedding } from '../server/utils/ai'
 import comprTextualJson from './compreensao-textual.json'
 import clarezaResJson from './clareza-resposta.json'
 import { cartas, perguntas } from './cartas-servico.json'
@@ -60,7 +60,7 @@ async function main() {
     }
   })
 
-    const mt = await prisma.metricas.create({
+  const mt = await prisma.metricas.create({
     data: {
       metricas: 'Matematica',
       tipo: TipoMetrica.Matematica,
@@ -82,7 +82,7 @@ async function main() {
   })
 
 
- await prisma.bancoDeQuestoes.createMany({
+  await prisma.bancoDeQuestoes.createMany({
     data: [
       {
         metricaId: tx.id,
@@ -153,7 +153,7 @@ async function main() {
     }).filter((item, index) => 10 > index)
   })
 
-    await prisma.bancoDeQuestoes.createMany({
+  await prisma.bancoDeQuestoes.createMany({
     data: matematica.map((item) => {
       return {
         metricaId: mt.id,
@@ -163,13 +163,13 @@ async function main() {
           tipo: item.type
         } satisfies TesteMatematicaQuestion,
         gabarito: {
-          gabarito: item.solution 
+          gabarito: item.solution
         } satisfies TesteMatematicaGabarito,
       }
     }).filter((item, index) => 10 > index)
   })
 
-    await prisma.bancoDeQuestoes.createMany({
+  await prisma.bancoDeQuestoes.createMany({
     data: raciociniologico.map((item) => {
       return {
         metricaId: rl.id,
@@ -178,7 +178,7 @@ async function main() {
           nivel: item.level
         } satisfies TesteRaciocinioQuestion,
         gabarito: {
-          gabarito: item.Gabarito 
+          gabarito: item.Gabarito
         } satisfies TesteRaciocinioGabarito,
       }
     }).filter((item, index) => 10 > index)
@@ -196,62 +196,47 @@ async function main() {
           tipo: item.tipo
         } satisfies TesteVibeCodingQuestion,
         gabarito: {
-          gabarito: item.gabarito 
+          gabarito: item.gabarito
         } satisfies TesteVibeCodingGabarito,
       }
     })//.filter((item, index) => 10 > index)
   })
 
-  if (false && process.env.UPSTASH_VECTOR_REST_URL && process.env.UPSTASH_VECTOR_REST_TOKEN) {
-    const index = new Index({
-      url: process.env.UPSTASH_VECTOR_REST_URL,
-      token: process.env.UPSTASH_VECTOR_REST_TOKEN,
-    })
+  // Generate embeddings for CartasServico
+  console.log("Generating embeddings for CartasServico...")
 
-    const oque = cartas.map((item, i) => index.upsert({
-      id: "cartas-oque-"+i,
-      data: item.oque,
-      metadata: {
-        title: `O que é o serviço "${item.nome}" do órgão "${item.orgao}"`,
-      },
-    }))
+  for (let i = 0; i < cartas.length; i++) {
+    const item = cartas[i]!;
 
-    const quem = cartas.map((item, i) => index.upsert({
-      id: "cartas-quem-"+i,
-      data: item.quem,
-      metadata: {
-        title: `Para quem é o serviço "${item.nome}" do órgão "${item.orgao}"`,
-      },
-    }))
+    // Oque
+    const embeddingOque = await generateEmbedding(item.oque);
+    await prisma.$executeRaw`INSERT INTO "cartas_servico" (id, content, metadata, embedding) VALUES (${"cartas-oque-" + i}, ${item.oque}, ${JSON.stringify({ title: `O que é o serviço "${item.nome}" do órgão "${item.orgao}"` })}::jsonb, ${JSON.stringify(embeddingOque)}::vector)`;
 
-    const como = cartas.map((item, i) => index.upsert({
-      id: "cartas-como-"+i,
-      data: item.como,
-      metadata: {
-        title: `Como utilizar o serviço "${item.nome}" do órgão "${item.orgao}"`,
-      },
-    }))
+    // Quem
+    const embeddingQuem = await generateEmbedding(item.quem);
+    await prisma.$executeRaw`INSERT INTO "cartas_servico" (id, content, metadata, embedding) VALUES (${"cartas-quem-" + i}, ${item.quem}, ${JSON.stringify({ title: `Para quem é o serviço "${item.nome}" do órgão "${item.orgao}"` })}::jsonb, ${JSON.stringify(embeddingQuem)}::vector)`;
 
-    const embeddings = [oque, quem, como].flat(2)
-
-    await Promise.all(embeddings)
+    // Como
+    const embeddingComo = await generateEmbedding(item.como);
+    await prisma.$executeRaw`INSERT INTO "cartas_servico" (id, content, metadata, embedding) VALUES (${"cartas-como-" + i}, ${item.como}, ${JSON.stringify({ title: `Como utilizar o serviço "${item.nome}" do órgão "${item.orgao}"` })}::jsonb, ${JSON.stringify(embeddingComo)}::vector)`;
   }
 
 
 
-/*   const modelos = await prisma.modelos.findMany()
 
-  const indicadores = modelos.map(modelo => ({
-    metricaId: tx.id,
-    indicador: Math.floor(Math.random() * 101),
-    modeloId: modelo.id
-  }))
-
-  await prisma.indicadores.createMany({
-    data: indicadores
-  }) 
-
-  */
+  /*   const modelos = await prisma.modelos.findMany()
+  
+    const indicadores = modelos.map(modelo => ({
+      metricaId: tx.id,
+      indicador: Math.floor(Math.random() * 101),
+      modeloId: modelo.id
+    }))
+  
+    await prisma.indicadores.createMany({
+      data: indicadores
+    }) 
+  
+    */
 }
 
 main()

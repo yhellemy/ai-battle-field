@@ -1,10 +1,21 @@
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [vector]
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+model CartaServico {
+  id        String                 @id @default(uuid())
+  content   String
+  metadata  Json?
+  embedding Unsupported("vector")?
+
+  @@map("cartas_servico")
 }
 
 enum Provider {

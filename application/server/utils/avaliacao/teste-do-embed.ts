@@ -1,19 +1,22 @@
 import { createAgent } from "langchain";
 import { z } from 'zod';
+import { generateEmbedding } from '../ai';
 
 export type TesteDoEmbedContract = AplicacaoTesteContract<TesteDoEmbedQuestion, WithModelMetadata<TesteDoEmbedOutput>>
 
 export async function testeDoEmbed(modelProvider: ModelProvider, ctx: TesteDoEmbedQuestion): Promise<WithModelMetadata<TesteDoEmbedOutput>> {
   const model = getModel(modelProvider)
 
-  const index = useUpstashIndex()
+  const prisma = usePrisma()
+  const embedding = await generateEmbedding(ctx.pergunta)
+  const vectorQuery = `[${embedding.join(',')}]`
 
-  const results = await index.query({
-    data: ctx.pergunta,
-    topK: 10,
-    includeMetadata: true,
-    includeData: true,
-  })
+  const results = await prisma.$queryRaw<{ data: string, metadata: any }[]>`
+    SELECT content as data, metadata 
+    FROM "cartas_servico" 
+    ORDER BY embedding <-> ${vectorQuery}::vector 
+    LIMIT 10
+  `
 
   const rag = `"""${results.map(result => `${result.metadata?.title}:\n${result.data}\n`).join('---\n')}"""`
 
