@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UBadge, UButton } from '#components'
+import { UBadge, UButton, UDropdownMenu } from '#components'
 import type { TableColumn } from '@nuxt/ui'
 
 definePageMeta({
@@ -7,6 +7,7 @@ definePageMeta({
 })
 
 interface cols  {
+  "id": number,
   "nome_modelo": string,
   "compreensaotextualmetrica": number,
   "qualidaderesposta": number,
@@ -42,6 +43,25 @@ async function adicionarModelo () {
   })
 }
 
+async function deletarModelo (id: number) {
+  const { error } = await asyncEnvelope(async () => await $fetch('/api/modelos/modelo', {
+    method: 'DELETE',
+    body: {
+      id: id
+    }
+  }))
+
+  if (error) return toast.add({
+    title: 'Falha ao deletar modelo',
+    color: 'error'
+  })
+  
+  refreshNuxtData('tabela')
+  return toast.add({
+    title: 'Modelo deletado com sucesso!'
+  })
+}
+
 const { data: providers, status: providerStatus } = await useAsyncData('providers',() => $fetch('/api/providers'))
 const { data: tabela, status: tabelaStatus } = await useAsyncData('tabela',() => $fetch<cols[]>('/api/tabela'))
 
@@ -58,6 +78,9 @@ const sorting = ref([
 ])
 
 const columns: TableColumn<cols>[] = [
+  {
+    id: 'actions',
+  },
   {
     accessorKey: 'nome_modelo',
 
@@ -319,7 +342,21 @@ const columns: TableColumn<cols>[] = [
         </template>
       </UCard>
       <UCard class="min-w-lg">
-        <UTable v-if="tabela" :data="tabela" v-model:sorting="sorting" :columns="columns"  />
+        <UTable v-if="tabela" :data="tabela" v-model:sorting="sorting" :columns="columns">
+          <template #actions-cell="{ row }">
+            <UDropdownMenu :items="[
+              [{
+                label: 'Deletar Modelo',
+                icon: 'i-heroicons-trash-20-solid',
+                onSelect: () => {
+                  deletarModelo(row.original.id)
+                }
+              }]
+            ]">
+              <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
+            </UDropdownMenu>
+          </template>
+        </UTable>
       </UCard>
     </div>
   </div>

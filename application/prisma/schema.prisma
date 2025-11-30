@@ -87,7 +87,7 @@ model Resultados {
   bancoDeQuestoes   BancoDeQuestoes @relation(fields: [bancoDeQuestoesId], references: [id])
   bancoDeQuestoesId Int
 
-  modelo   Modelos @relation(fields: [modeloId], references: [id])
+  modelo   Modelos @relation(fields: [modeloId], references: [id], onDelete: Cascade)
   modeloId Int
   inputTokens Int
   outputTokens Int
@@ -103,7 +103,7 @@ model Indicadores {
 
   indicador Int
 
-  modelo   Modelos @relation(fields: [modeloId], references: [id])
+  modelo   Modelos @relation(fields: [modeloId], references: [id], onDelete: Cascade)
   modeloId Int
 
   metrica   Metricas @relation(fields: [metricaId], references: [id])

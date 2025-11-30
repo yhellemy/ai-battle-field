@@ -220,6 +220,7 @@ GROUP BY 1,2),
 
 consolidado AS (
 SELECT
+    coalesce(d.modelo_id, m.modelo_id, r.modelo_id, ct.modelo_id, cr.modelo_id, qr.modelo_id) AS id,
     coalesce(d.nome_modelo, m.nome_modelo, r.nome_modelo, ct.nome_modelo, cr.nome_modelo, qr.nome_modelo) AS nome_modelo,
     d.direitometrica :: float,
     m.matematica :: float,
