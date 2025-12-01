@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UBadge, UButton, UDropdownMenu } from '#components'
+import { UBadge, UButton, UDropdownMenu, UModal } from '#components'
 import type { TableColumn } from '@nuxt/ui'
 
 definePageMeta({
@@ -59,6 +59,25 @@ async function deletarModelo (id: number) {
   refreshNuxtData('tabela')
   return toast.add({
     title: 'Modelo deletado com sucesso!'
+  })
+}
+
+async function atualizarModelo (id: number) {
+  const { error } = await asyncEnvelope(async () => await $fetch('/api/modelos/modelo', {
+    method: 'PUT',
+    body: {
+      id: id,
+    }
+  }))
+
+  if (error) return toast.add({
+    title: 'Falha ao atualizar modelo',
+    color: 'error'
+  })
+
+  refreshNuxtData('tabela')
+  return toast.add({
+    title: 'Modelo atualizado com sucesso!'
   })
 }
 
@@ -345,6 +364,13 @@ const columns: TableColumn<cols>[] = [
         <UTable v-if="tabela" :data="tabela" v-model:sorting="sorting" :columns="columns">
           <template #actions-cell="{ row }">
             <UDropdownMenu :items="[
+              [{
+                label: 'Atualizar Modelo',
+                icon: 'i-heroicons-arrow-path-20-solid',
+                onSelect: () => {
+                  atualizarModelo(row.original.id)
+                }
+              }],
               [{
                 label: 'Deletar Modelo',
                 icon: 'i-heroicons-trash-20-solid',
