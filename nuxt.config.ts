@@ -33,5 +33,5 @@ export default defineNuxtConfig({
     AZURE_OPENAI_API_VERSION: process.env.AZURE_OPENAI_API_VERSION
   },
   modules: ['@nuxt/ui', '@nuxt/fonts'],
-  css: ['./assets/css/main.css'],
+  css: ['~/assets/css/main.css'],
 })
